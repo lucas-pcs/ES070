@@ -16,11 +16,12 @@ class Teclado{
     };
     const byte linhas[nlinha] = {9, 8, 7, 6};
     const byte colunas[ncolunas] = {5, 4, 3, 2}; 
-    Keypad teclado_personalizado = Keypad(makeKeymap(dicionarioTeclado), linhas, colunas, nlinha, ncolunas);
+    Keypad teclado_personalizado;
   
   public:
 
     void init(){
+      teclado_personalizado = Keypad(makeKeymap(dicionarioTeclado), linhas, colunas, nlinha, ncolunas);
       Serial.begin(9600); // Inicia porta serial
     }
 

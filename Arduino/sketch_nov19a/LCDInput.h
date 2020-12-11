@@ -12,7 +12,6 @@ class LCD{
   private:
    
   public:
-  
     void init(){
       lcd.begin(16, 2);
     }
