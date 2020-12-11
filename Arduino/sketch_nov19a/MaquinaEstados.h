@@ -23,9 +23,12 @@ class MaquinaEstados{
       rele.init();
     };
 
-    void run(){
-      rele.abre();
-    };
-
+    void maquina();
 };
+
+void MaquinaEstados::maquina()
+{
+  rele.abre();
+}
+
 #endif

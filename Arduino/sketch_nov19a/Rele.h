@@ -12,14 +12,18 @@ class Rele{
       digitalWrite(pinoRele, HIGH); //MÓDULO RELÉ INICIA DESLIGADO
     };
     
-    void abre(){
-      digitalWrite(pinoRele, LOW); //LIGA O MÓDULO RELÉ (LÂMPADA ACENDE)
-      statusSolen = 1; //VARIÁVEL RECEBE O VALOR 1
-      delay(2000); //INTERVALO DE 2000 MILISSEGUNDOS
-      digitalWrite(pinoRele, HIGH); //DESLIGA O MÓDULO RELÉ (LÂMPADA APAGA)
-      statusSolen = 0; //VARIÁVEL RECEBE O VALOR 0
-      delay(2000); //INTERVALO DE 2000 MILISSEGUNDOS 
-    };
+    void abre();
  
 };
+void Rele::abre()
+{
+    digitalWrite(pinoRele, LOW); //LIGA O MÓDULO RELÉ (LÂMPADA ACENDE)
+    statusSolen = 1; //VARIÁVEL RECEBE O VALOR 1
+    delay(2000); //INTERVALO DE 2000 MILISSEGUNDOS
+    digitalWrite(pinoRele, HIGH); //DESLIGA O MÓDULO RELÉ (LÂMPADA APAGA)
+    statusSolen = 0; //VARIÁVEL RECEBE O VALOR 0
+    delay(2000); //INTERVALO DE 2000 MILISSEGUNDOS 
+}
+
+
 #endif
