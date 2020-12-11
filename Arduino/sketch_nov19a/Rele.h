@@ -6,26 +6,18 @@ class Rele{
     const int pinoRele = 3; //PINO DIGITAL UTILIZADO PELO MÓDULO RELÉ
     int statusSolen = 0; //VARIÁVEL QUE CONTROLA O ESTADO DO MÓDULO RELÉ (LIGADO / DESLIGADO) 
   public:
-    void init(){
+    void inicia();
+    void abre();
+};
+
+void Rele::inicia()
+{
       //pino 3
       pinMode(pinoRele, OUTPUT); //DEFINE O PINO COMO SAÍDA
       digitalWrite(pinoRele, HIGH); //MÓDULO RELÉ INICIA DESLIGADO
-      delay(2000);
-      digitalWrite(pinoRele, LOW);
-      delay(2000);
-      digitalWrite(pinoRele, HIGH); //MÓDULO RELÉ INICIA DESLIGADO
-      delay(2000);
-      digitalWrite(pinoRele, LOW);
-      delay(2000);
-      digitalWrite(pinoRele, HIGH); //MÓDULO RELÉ INICIA DESLIGADO
-      delay(2000);
-      digitalWrite(pinoRele, LOW);
-      delay(2000);
-    };
-    
-    void abre();
- 
-};
+}
+
+
 void Rele::abre()
 {
     digitalWrite(pinoRele, LOW); //LIGA O MÓDULO RELÉ (LÂMPADA ACENDE)

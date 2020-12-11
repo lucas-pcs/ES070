@@ -19,11 +19,10 @@ class Teclado{
     Keypad teclado_personalizado;
   
   public:
-
     void init(){
       teclado_personalizado = Keypad(makeKeymap(dicionarioTeclado), linhas, colunas, nlinha, ncolunas);
       Serial.begin(9600); // Inicia porta serial
-    }
+    };
 
     char leTeclado(){
       char leitura_teclas = teclado_personalizado.getKey(); // Atribui a variavel a leitura do teclado
@@ -33,7 +32,7 @@ class Teclado{
       else {
         return ' ';
       }
-    }
+    };
  
 };
 #endif

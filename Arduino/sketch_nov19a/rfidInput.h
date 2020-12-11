@@ -7,12 +7,12 @@ class RFID{
   private:
     MFRC522 rfid(); 
   public:
-  
-    void init(){
-    };
-
-    void ler(){
-    };
- 
+    void inicia();
+    void ler();
 };
+
+void RFID::inicia()
+{
+}
+
 #endif

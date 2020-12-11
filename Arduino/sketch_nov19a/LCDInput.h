@@ -14,16 +14,16 @@ class LCD{
   public:
     void init(){
       lcd.begin(16, 2);
-    }
+    };
 
     void escreveTela(String texto, int linha){
       lcd.setCursor(linha, 0);
       lcd.print(texto);
-    }
+    };
     
     void limpaTela(){
       lcd.clear(); 
-    }
+    };
  
 };
 #endif

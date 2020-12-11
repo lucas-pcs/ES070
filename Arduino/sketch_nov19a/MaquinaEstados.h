@@ -19,8 +19,8 @@ class MaquinaEstados{
     void init(){
       teclado.init();
       lcd.init();
-      rfid.init();
-      rele.init();
+      rfid.inicia();
+      rele.inicia();
     };
 
     void maquina();
