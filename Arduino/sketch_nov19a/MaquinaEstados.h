@@ -4,6 +4,7 @@
 #include "TecladoInput.h"
 #include "LCDInput.h"
 #include "rfidInput.h"
+#include "Rele.h"
 
 class MaquinaEstados{
   private:
@@ -12,6 +13,7 @@ class MaquinaEstados{
     Teclado  teclado;
     LCD lcd;
     RFID rfid;
+    Rele rele;
     
   public:
 
@@ -19,9 +21,11 @@ class MaquinaEstados{
       teclado.init();
       lcd.init();
       rfid.init();
+      rele.init();
     }
 
     void maquina(){
+      rele.abre();
     }
 
 };
