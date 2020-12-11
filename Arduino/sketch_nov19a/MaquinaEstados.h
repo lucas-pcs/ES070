@@ -16,7 +16,6 @@ class MaquinaEstados{
     Rele rele;
     
   public:
-
     void init(){
       teclado.init();
       lcd.init();
@@ -24,7 +23,7 @@ class MaquinaEstados{
       rele.init();
     }
 
-    void maquina(){
+    void run(){
       rele.abre();
     }
 
