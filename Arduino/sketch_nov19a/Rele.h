@@ -10,6 +10,8 @@ class Rele{
       //pino 3
       pinMode(pinoRele, OUTPUT); //DEFINE O PINO COMO SAÍDA
       digitalWrite(pinoRele, HIGH); //MÓDULO RELÉ INICIA DESLIGADO
+      delay(2000);
+      digitalWrite(pinoRele, LOW);
     }
     
     void abre(){
