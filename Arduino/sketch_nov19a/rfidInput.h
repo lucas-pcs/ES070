@@ -9,13 +9,10 @@ class RFID{
   public:
   
     void init(){
-    }
+    };
 
-    void escreveTela(String){
-    }
-    
-    void limpaTela(){ 
-    }
+    void ler(){
+    };
  
 };
 #endif
