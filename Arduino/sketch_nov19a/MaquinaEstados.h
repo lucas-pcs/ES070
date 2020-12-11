@@ -21,11 +21,11 @@ class MaquinaEstados{
       lcd.init();
       rfid.init();
       rele.init();
-    }
+    };
 
     void run(){
       rele.abre();
-    }
+    };
 
 };
 #endif
