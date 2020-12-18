@@ -16,7 +16,7 @@ Tranca::Tranca(int Porta)
   _Porta = Porta;
   _Estado = false;
   pinMode(_Porta, OUTPUT);   //Define a porta como saída
-  digitalWrite(_Porta, LOW);
+  analogWrite(_Porta, 255);
   Serial.print("O tranca1 esta: ");
   Serial.println(_Porta);
 }

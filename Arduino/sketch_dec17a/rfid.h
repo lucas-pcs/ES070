@@ -7,9 +7,10 @@ class RFID{
     byte readCard[4]; // Array that will hold UID of the RFID card.
     int successRead;
     MFRC522 mfrc522;
+    byte noCard[4] = {0x00, 0x00, 0x00, 0x00};
   public:
     RFID();
-    void LeTag();
+    byte* LeTag();
     void CadastraTag();  
 };
 
@@ -18,10 +19,16 @@ RFID::RFID(){
   mfrc522.PCD_Init();   // Inicia o módulo MFRC522 RFID  
 };
 
-void RFID::LeTag(){
-  for(int i = 0; i < mfrc522.uid.size; i++){
-    readCard[i] = mfrc522.uid.uidByte[i]; // Lê o cartão RFID
+byte* RFID::LeTag(){
+  if ( mfrc522.PICC_IsNewCardPresent()) {
+    for(int i = 0; i < mfrc522.uid.size; i++){
+      readCard[i] = mfrc522.uid.uidByte[i]; // Lê o cartão RFID
+    }
+    return readCard; 
+  }else{
+    return noCard;
   }
+  
 };
 
 void RFID::CadastraTag(){
