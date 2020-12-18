@@ -1,3 +1,4 @@
+#include <string.h>
 #include "teclado.h"
 #include "tranca.h" 
 #include "lcd.h"
@@ -29,7 +30,7 @@ void setup() {
 }
 
 void loop() {
-  
+  Serial.print(ESPERA);
 
 
   
