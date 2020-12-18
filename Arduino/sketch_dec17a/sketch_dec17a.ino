@@ -91,7 +91,7 @@ void Maquina::Escolher()
         lcd->escreveTela("ABRIU", 0);
         lcd->escreveTela(senInput, 1);
         
-        delay(3000);
+        delay(300);
         tranca1->Fecha();
         lcd->limpaTela();
       }else{
@@ -100,7 +100,7 @@ void Maquina::Escolher()
         lcd->escreveTela("Senha", 0);
         lcd->escreveTela("Incorreta", 1);
         
-        delay(3000);
+        delay(300);
         lcd->limpaTela();
       }
       senInput = "";

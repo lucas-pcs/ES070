@@ -33,12 +33,12 @@ bool Tranca::Estado()
 
 void Tranca::Abre()
 {
-  digitalWrite(_Porta, HIGH);
+  analogWrite(_Porta, 0);
   _Estado = true;
 }
 
 void Tranca::Fecha()
 {
-  digitalWrite(_Porta, LOW);
+  analogWrite(_Porta, 255);
   _Estado = false;
 }
