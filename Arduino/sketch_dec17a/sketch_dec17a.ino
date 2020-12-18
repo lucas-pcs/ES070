@@ -13,8 +13,13 @@ Lcd *lcd;  //Cria ponteiro para a tranca
 #define REMOVER  4
 #define DENOVO   5
 
-long comeco = 0;
-long intervalo = 500;
+//long comeco = 0;
+//long intervalo = 500;
+
+int Estado = 1;
+int i=0;
+String senInput = "";
+String senha = "1234";
 
 //Definição de portas do sistema
 int  portaTranca = A2; // tranca
@@ -31,8 +36,19 @@ void setup() {
 
 void loop() {
   Serial.print(ESPERA);
-
-
+  char letra = teclado->leTeclado();
+  if (letra != ' '){
+    senInput += letra;
+    i ++;
+  }
+  if (i == 4){
+    i = 0;
+    if(senInput == senha){
+      tranca1->Abre();
+      delay(1000);
+      tranca1->Fecha();
+    }
+  }
   
 //  unsigned long agora = millis();
 //  char letra = teclado->leTeclado();
