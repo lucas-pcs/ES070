@@ -83,14 +83,26 @@ void Maquina::Escolher()
     case 'A':
       if(senInput == senha){
         tranca1->Abre();
+        lcd->limpaTela();
+        lcd->escreveTela("ABRIU", 0);
+        lcd->escreveTela(senInput, 1);
         delay(3000);
         tranca1->Fecha();
         lcd->limpaTela();
+      }else{
+        lcd->limpaTela();
+        lcd->escreveTela("Senha", 0);
+        lcd->escreveTela("Incorreta", 1);
+        delay(3000);
+        lcd->limpaTela();
       }
+      senInput = "";
       Estado = ESPERA;
     case 'B':
       Serial.print(letra);
     case 'C':
+      Serial.print(letra);
+    case 'D':
       Serial.print(letra);
     default:
       Serial.print(letra);
