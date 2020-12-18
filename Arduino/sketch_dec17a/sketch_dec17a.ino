@@ -112,8 +112,17 @@ void Maquina::Escolher()
   }
 };
 
+Maquina maq;
 
 void loop() {
   letra = teclado->leTeclado();
-
+  int est = maq.getEstado();
+  switch (Estado) {
+    case ESPERA:
+      maq.Espera();
+    case ESCOLHER:
+      maq.Escolher();
+    default:
+      Serial.print(letra);
+  }
 }
