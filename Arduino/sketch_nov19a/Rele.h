@@ -17,7 +17,6 @@ void Rele::inicia()
       digitalWrite(pinoRele, HIGH); //MÓDULO RELÉ INICIA DESLIGADO
 }
 
-
 void Rele::abre()
 {
     digitalWrite(pinoRele, LOW); //LIGA O MÓDULO RELÉ (LÂMPADA ACENDE)
