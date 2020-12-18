@@ -8,30 +8,33 @@ char dicionarioTeclado[4][4] = { // Matriz de caracteres (mapeamento do teclado)
   {'7', '8', '9', 'C'},
   {'*', '0', '#', 'D'}
 };
-byte linhas[4] = {A3, 8, 7, 6};
-byte colunas[4] = {5, 4, 3, 2};
+//byte linhas[4] = {A3, 8, 7, 6};
+//byte colunas[4] = {5, 4, 3, 2};
 
 class Teclado{
   private:
+    byte *linhas;
+    byte *colunas;
     Keypad *teclado_personalizado;
   public:
-    Teclado();
+    Teclado(byte *linha, byte *coluna);
     char leTeclado();
 };
 
-Teclado::Teclado()
+Teclado::Teclado(byte *linha, byte *coluna)
 {
-  teclado_personalizado = new Keypad(makeKeymap(dicionarioTeclado), linhas, colunas, nlinha, ncolunas);
+  linhas = linha;
+  colunas = coluna;
+  teclado_personalizado = new Keypad(makeKeymap(dicionarioTeclado), linha, coluna, nlinha, ncolunas);
 };
 
 char Teclado::leTeclado()
 {
   char leitura_teclas = teclado_personalizado->getKey(); // Atribui a variavel a leitura do teclado
-  if (leitura_teclas) {                                 // Se alguma tecla foi pressionada
-    return leitura_teclas;
-    Serial.print(leitura_teclas);
+  if (leitura_teclas) {                                  // Se alguma tecla foi pressionada
+    return leitura_teclas;                               // retorna tecla pressionada
   }
   else {
-    return ' ';
+    return ' ';                                          // se nao, retorna vazio.
   }
 };
