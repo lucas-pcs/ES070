@@ -13,13 +13,13 @@ Lcd *lcd;  //Cria ponteiro para a tranca
 #define REMOVER  4
 #define DENOVO   5
 
-//long comeco = 0;
-//long intervalo = 500;
 
+char letra;
 int Estado = 1;
 int i=0;
 String senInput = "";
 String senha = "1234";
+String senhaADM = "1235";
 
 //Definição de portas do sistema
 int  portaTranca = A2; // tranca
@@ -34,32 +34,71 @@ void setup() {
   Serial.begin(9600);
 }
 
-void loop() {
-  Serial.print(ESPERA);
-  char letra = teclado->leTeclado();
+
+class Maquina
+{
+  private:
+    int Estado;   
+  public:
+    Maquina();
+    int getEstado();
+    void setEstado(int estado);
+    void Espera();
+    void Escolher();
+};
+
+Maquina::Maquina()
+{
+  Estado = ESPERA;
+};
+
+void Maquina::setEstado(int estado)
+{
+  Estado = estado;
+};
+
+int Maquina::getEstado()
+{
+  return Estado;
+};
+
+void Maquina::Espera()
+{
   if (letra != ' '){
+    Serial.print(letra);
     senInput += letra;
+    lcd->limpaTela();
+    lcd->escreveTela("senha", 0);
+    lcd->escreveTela(senInput, 1);
     i ++;
   }
   if (i == 4){
-    i = 0;
-    if(senInput == senha){
-      tranca1->Abre();
-      delay(1000);
-      tranca1->Fecha();
-    }
+    Estado = ESCOLHER;
   }
-  
-//  unsigned long agora = millis();
-//  char letra = teclado->leTeclado();
-//  Serial.print(letra);
-//  lcd->escreveTela("texto", 0);
-//  if((agora - comeco) > intervalo) {
-//    comeco = agora;
-//    if(tranca1->Estado()) {
-//      tranca1->Fecha();
-//    } else {
-//      tranca1->Abre();
-//    }
-//  }
+};
+void Maquina::Escolher()
+{
+  i = 0;
+  switch(letra){
+    case 'A':
+      if(senInput == senha){
+        tranca1->Abre();
+        delay(3000);
+        tranca1->Fecha();
+        lcd->limpaTela();
+      }
+      Estado = ESPERA;
+    case 'B':
+      Serial.print(letra);
+    case 'C':
+      Serial.print(letra);
+    default:
+      Serial.print(letra);
+  }
+};
+
+
+void loop() {
+  letra = teclado->leTeclado();
+
 }
