@@ -2,10 +2,12 @@
 #include "teclado.h"
 #include "tranca.h" 
 #include "lcd.h"
+//#include "rfid.h"
 
-Tranca *tranca1;  //Cria ponteiro para a tranca
-Teclado *teclado;  //Cria ponteiro para a tranca
-Lcd *lcd;  //Cria ponteiro para a tranca
+Tranca *tranca1;    //Cria ponteiro para a tranca
+Teclado *teclado;   //Cria ponteiro para a tranca
+Lcd *lcd;           //Cria ponteiro para a tranca
+//RFID *rfid;         //Cria ponteiro para a tranca
 
 #define ESPERA   1
 #define CADASTRO 2
@@ -31,6 +33,7 @@ void setup() {
   tranca1 = new Tranca(portaTranca);                  //cria o objeto traca
   teclado = new Teclado(portaLinhas, portaColunas);   //cria o objeto teclado
   lcd = new Lcd(portaLcd);                            //cria o objeto lcd
+//  rfid = new RFID();                            //cria o objeto lcd
   Serial.begin(9600);
 }
 
