@@ -1,18 +1,18 @@
 #include <Keypad.h>
 
-const byte nlinha = 4; // n de linhas
-const byte ncolunas = 4; //n de colunas
+byte nlinha = 4; // n de linhas
+byte ncolunas = 4; //n de colunas
+char dicionarioTeclado[4][4] = { // Matriz de caracteres (mapeamento do teclado)
+  {'1', '2', '3', 'A'},
+  {'4', '5', '6', 'B'},
+  {'7', '8', '9', 'C'},
+  {'*', '0', '#', 'D'}
+};
+byte linhas[] = {9, 8, 7, 6};
+byte colunas[] = {5, 4, 3, 2};
 
 class Teclado{
   private:
-    const char dicionarioTeclado[nlinha][ncolunas] = { // Matriz de caracteres (mapeamento do teclado)
-      {'1', '2', '3', 'A'},
-      {'4', '5', '6', 'B'},
-      {'7', '8', '9', 'C'},
-      {'*', '0', '#', 'D'}
-    };
-    const byte linhas[nlinha] = {9, 8, 7, 6};
-    const byte colunas[ncolunas] = {5, 4, 3, 2}; 
     Keypad *teclado_personalizado;
   public:
     Teclado();
