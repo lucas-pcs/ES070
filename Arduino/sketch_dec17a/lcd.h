@@ -21,11 +21,12 @@ Lcd::Lcd(byte porta)
 
 void Lcd::escreveTela(String texto, int linha)
 {
-  lcdInt->setCursor(linha, 0);
+  lcdInt->setCursor(0, linha);
   lcdInt->print(texto);
 };
 
 void Lcd::limpaTela()
 {
-  lcdInt->clear(); 
+  lcdInt->clear();
+  lcdInt->setCursor(0, 0); 
 };

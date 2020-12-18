@@ -2,12 +2,12 @@
 #include "teclado.h"
 #include "tranca.h" 
 #include "lcd.h"
-//#include "rfid.h"
+#include "rfid.h"
 
 Tranca *tranca1;    //Cria ponteiro para a tranca
 Teclado *teclado;   //Cria ponteiro para a tranca
 Lcd *lcd;           //Cria ponteiro para a tranca
-//RFID *rfid;         //Cria ponteiro para a tranca
+RFID *rfid;         //Cria ponteiro para a tranca
 
 #define ESPERA   1
 #define CADASTRO 2
@@ -33,7 +33,7 @@ void setup() {
   tranca1 = new Tranca(portaTranca);                  //cria o objeto traca
   teclado = new Teclado(portaLinhas, portaColunas);   //cria o objeto teclado
   lcd = new Lcd(portaLcd);                            //cria o objeto lcd
-//  rfid = new RFID();                            //cria o objeto lcd
+  rfid = new RFID();                            //cria o objeto lcd
   Serial.begin(9600);
 }
 
@@ -84,18 +84,22 @@ void Maquina::Escolher()
   i = 0;
   switch(letra){
     case 'A':
-      if(senInput == senha){
+      if(strncmp(&senInput[0],&senha[0], 4)){
         tranca1->Abre();
+        
         lcd->limpaTela();
         lcd->escreveTela("ABRIU", 0);
         lcd->escreveTela(senInput, 1);
+        
         delay(3000);
         tranca1->Fecha();
         lcd->limpaTela();
       }else{
+        
         lcd->limpaTela();
         lcd->escreveTela("Senha", 0);
         lcd->escreveTela("Incorreta", 1);
+        
         delay(3000);
         lcd->limpaTela();
       }
@@ -106,8 +110,6 @@ void Maquina::Escolher()
     case 'C':
       Serial.print(letra);
     case 'D':
-      Serial.print(letra);
-    default:
       Serial.print(letra);
   }
 };
@@ -122,7 +124,5 @@ void loop() {
       maq.Espera();
     case ESCOLHER:
       maq.Escolher();
-    default:
-      Serial.print(letra);
   }
 }
