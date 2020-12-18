@@ -2,8 +2,7 @@ class Tranca
 {
   private:
     int _Porta;
-    bool _Estado;
-    
+    bool _Estado;   
   public:
     Tranca(int Porta);
     int Porta();
