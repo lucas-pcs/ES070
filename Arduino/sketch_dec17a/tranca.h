@@ -9,6 +9,7 @@ class Tranca
     bool Estado();
     void Abre();
     void Fecha();
+    void AbreeFecha()
 };
 
 Tranca::Tranca(int Porta)
@@ -41,4 +42,11 @@ void Tranca::Fecha()
 {
   analogWrite(_Porta, 255);
   _Estado = false;
+}
+
+void Tranca::AbreeFecha()
+{
+      tranca1->Abre();
+      delay(3000);
+      tranca1->Fecha();
 }

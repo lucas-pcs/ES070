@@ -8,6 +8,7 @@ class Lcd{
   public:
     Lcd(byte porta);
     void escreveTela(String texto, int linha);
+    void escreveSenha(String texto, String senha);
     void limpaTela();
 };
 
@@ -29,4 +30,11 @@ void Lcd::limpaTela()
 {
   lcdInt->clear();
   lcdInt->setCursor(0, 0); 
+};
+
+void Lcd::escreveSenha(String texto, String senha)
+{
+    limpaTela();
+    escreveTela("senha", 0);
+    escreveTela(senha, 1);
 };
