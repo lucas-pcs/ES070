@@ -35,6 +35,8 @@ void Lcd::limpaTela()
 void Lcd::escreveSenha(String texto, String senha)
 {
     limpaTela();
-    escreveTela("senha", 0);
+    escreveTela(texto, 0);
     escreveTela(senha, 1);
+    delay(3000);
+    limpaTela();
 };

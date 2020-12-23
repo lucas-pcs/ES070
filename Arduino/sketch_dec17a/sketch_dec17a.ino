@@ -7,7 +7,6 @@ void setup() {
   Serial.begin(9600);
 }
 
-
 void loop() {
   int est = maq->getEstado();
   switch (est) {
@@ -17,6 +16,8 @@ void loop() {
       maq->Escolher();
     case LECARTAO:
       maq->LeCartao();
+    case ABRESENHA:
+      maq->AbreSenha();
   }
 }
 

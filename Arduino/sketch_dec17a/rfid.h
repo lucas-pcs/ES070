@@ -20,8 +20,7 @@ RFID::RFID(){
 };
 
 byte* RFID::LeTag(){
-   if (mfrc522.PICC_IsNewCardPresent()) 
-  {
+   if (mfrc522.PICC_IsNewCardPresent()) {
     if ( mfrc522.PICC_ReadCardSerial()) {
       for(int i = 0; i < mfrc522.uid.size; i++){
         readCard[i] = mfrc522.uid.uidByte[i]; // Lê o cartão RFID

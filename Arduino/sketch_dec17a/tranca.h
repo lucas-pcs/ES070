@@ -9,7 +9,7 @@ class Tranca
     bool Estado();
     void Abre();
     void Fecha();
-    void AbreeFecha()
+    void AbreeFecha();
 };
 
 Tranca::Tranca(int Porta)
@@ -46,7 +46,7 @@ void Tranca::Fecha()
 
 void Tranca::AbreeFecha()
 {
-      tranca1->Abre();
-      delay(3000);
-      tranca1->Fecha();
+  Abre();
+  delay(3000);
+  Fecha();
 }

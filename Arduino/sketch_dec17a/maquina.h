@@ -86,15 +86,11 @@ void Maquina::Espera()
 
 void Maquina::LeCartao()
 {
-    Serial.print(letra);
-    //Serial.print(strncmp(&readC[0],&readCard[0], 4));
     if(strncmp(&readC[0],&readCard[0], 4) == 0){      
       tranca1->AbreeFecha();
       lcd->escreveSenha("Card","Correto");
     }else{     
       lcd->escreveSenha("Card","Incorreto");    
-      delay(3000);
-      lcd->limpaTela();
     }
     senInput = "";
     Estado = ESPERA;
@@ -102,7 +98,8 @@ void Maquina::LeCartao()
 
 void Maquina::Escolher()
 {
-  i = 0;
+  char letra;
+  letra = teclado->leTeclado();
   switch(letra){
     case 'A':
       Estado = ABRESENHA;
@@ -115,58 +112,14 @@ void Maquina::Escolher()
   }
 };
 
-void Maquina::Escolher()
-{
-  i = 0;
-  switch(letra){
-    case 'A':
-      Serial.print(strncmp(&senInput[0],&senha[0], 4));
-      if(strncmp(&senInput[0],&senha[0], 4)){
-        tranca1->Abre();
-        
-        lcd->limpaTela();
-        lcd->escreveTela("ABRIU", 0);
-        lcd->escreveTela(senInput, 1);
-        
-        delay(3000);
-        tranca1->Fecha();
-        lcd->limpaTela();
-      }else{
-        
-        lcd->limpaTela();
-        lcd->escreveTela("Senha", 0);
-        lcd->escreveTela("Incorreta", 1);
-        
-        delay(3000);
-        lcd->limpaTela();
-      }
-      senInput = "";
-      Estado = ESPERA;
-    case 'B':
-      Serial.print(letra);
-    case 'C':
-      Serial.print(letra);
-      //Serial.print(strncmp(&readC[0],&readCard[0], 4));
-      if(strncmp(&readC[0],&readCard[0], 4) == 0){
-        tranca1->Abre();
-        
-        lcd->limpaTela();
-        lcd->escreveTela("ABRIU", 0);
-        
-        delay(3000);
-        tranca1->Fecha();
-        lcd->limpaTela();
-      }else{
-        
-        lcd->limpaTela();
-        lcd->escreveTela("Card", 0);
-        lcd->escreveTela("Incorreto", 1);
-        delay(3000);
-        lcd->limpaTela();
-      }
-      senInput = "";
-      Estado = ESPERA;
-    case 'D':
-      Serial.print(letra);
+void Maquina::AbreSenha(){
+  Serial.print(strncmp(&senInput[0],&senha[0], 4));
+  if(strncmp(&senInput[0],&senha[0], 4)){
+    tranca1->AbreeFecha();
+    lcd->escreveSenha("Senha","Correto");
+  }else{
+    lcd->escreveSenha("Senha","Incorreta");
   }
+  senInput = "";
+  Estado = ESPERA;
 };
