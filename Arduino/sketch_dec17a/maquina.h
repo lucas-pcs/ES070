@@ -24,7 +24,7 @@ class Maquina
 {
   private:
     int Estado;
-    int countTeclado = 0;
+    int countTeclado;
     String senInput = "";
     Tranca *tranca1;    //Cria ponteiro para a tranca
     Teclado *teclado;   //Cria ponteiro para a tranca
@@ -51,6 +51,7 @@ Maquina::Maquina()
 
 Maquina::Maquina(Tranca *tranca2, Teclado *teclado2, Lcd *lcd2,RFID *rfid2)
 {
+  countTeclado = 0;
   Estado = ESPERA;
   tranca1 = tranca2;                  //cria o objeto traca
   teclado = teclado2;   //cria o objeto teclado
@@ -109,6 +110,7 @@ void Maquina::LeCartao()
 void Maquina::Escolher()
 {
   char letra;
+  countTeclado = 0;
   letra = teclado->leTeclado();
   switch(letra){
     case 'A':
