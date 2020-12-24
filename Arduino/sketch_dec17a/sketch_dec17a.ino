@@ -1,5 +1,7 @@
 #include "maquina.h"
 
+
+
 Maquina *maq;
 
 #define ESPERA    1
@@ -10,8 +12,24 @@ Maquina *maq;
 #define ABRESENHA 6
 #define NOVASENHA 7
 
+
+Tranca *tranca1;    //Cria ponteiro para a tranca
+Teclado *teclado;   //Cria ponteiro para a tranca
+Lcd *lcd;           //Cria ponteiro para a tranca
+RFID *rfid;         //Cria ponteiro para a tranca
+
 void setup() {  
-  maq = new Maquina();                  //cria o objeto maquina de estados
+  int  portaTranca = A2; // tranca
+  byte portaLinhas[4] = {A3, 8, 7, 6}; // linha do teclado
+  byte portaColunas[4] = {5, 4, 3, 2}; // coluna do teclaso
+  byte portaLcd = 0x27; // porta do módulo i2c
+
+  tranca1 = new Tranca(portaTranca);                  //cria o objeto traca
+  teclado = new Teclado(portaLinhas, portaColunas);   //cria o objeto teclado
+  lcd = new Lcd(portaLcd);                            //cria o objeto lcd
+  rfid = new RFID();                            //cria o objeto lcd
+  
+  maq = new Maquina(tranca1, teclado, lcd, rfid);                  //cria o objeto maquina de estados
   Serial.begin(9600);
 }
 

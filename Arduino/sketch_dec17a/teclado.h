@@ -1,6 +1,6 @@
 #include <Keypad.h>
 
-byte nlinha = 4; // n de linhas
+byte nlinhas = 4; // n de linhas
 byte ncolunas = 4; //n de colunas
 char dicionarioTeclado[4][4] = { // Matriz de caracteres (mapeamento do teclado)
   {'1', '2', '3', 'A'},
@@ -23,7 +23,7 @@ Teclado::Teclado(byte *linha, byte *coluna)
 {
   linhas = linha;
   colunas = coluna;
-  teclado_personalizado = new Keypad(makeKeymap(dicionarioTeclado), linha, coluna, nlinha, ncolunas);
+  teclado_personalizado = new Keypad(makeKeymap(dicionarioTeclado), linha, coluna, nlinhas, ncolunas);
   Serial.print("Teclado INICIALIZADO"); 
 };
 

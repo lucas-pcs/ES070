@@ -13,11 +13,6 @@
 #define ABRESENHA 6
 #define NOVASENHA 7
 
-Tranca *tranca1;    //Cria ponteiro para a tranca
-Teclado *teclado;   //Cria ponteiro para a tranca
-Lcd *lcd;           //Cria ponteiro para a tranca
-RFID *rfid;         //Cria ponteiro para a tranca
-
 // variaveis mocadas para teste 
 String senha = "1234";
 String senhaADM = "1235";
@@ -30,9 +25,14 @@ class Maquina
   private:
     int Estado;
     int countTeclado = 0;
-    String senInput = "";   
+    String senInput = "";
+    Tranca *tranca1;    //Cria ponteiro para a tranca
+    Teclado *teclado;   //Cria ponteiro para a tranca
+    Lcd *lcd;           //Cria ponteiro para a tranca
+    RFID *rfid;         //Cria ponteiro para a tranca   
   public:
     Maquina();
+    Maquina(Tranca *tranca2, Teclado *teclado2, Lcd *lcd2,RFID *rfid2);
     int getEstado();
     void setEstado(int estado);
     void Espera();
@@ -45,16 +45,17 @@ class Maquina
 Maquina::Maquina()
 {
   Estado = ESPERA;
-  //Definição de portas do sistema (definir o melhor local para essas váriavéis)
-  int  portaTranca = A2; // tranca
-  byte portaLinhas[4] = {A3, 8, 7, 6}; // linha do teclado
-  byte portaColunas[4] = {5, 4, 3, 2}; // coluna do teclaso
-  byte portaLcd = 0x27; // porta do módulo i2c
+  Serial.print("MAQUINA");
+};
 
-  tranca1 = new Tranca(portaTranca);                  //cria o objeto traca
-  teclado = new Teclado(portaLinhas, portaColunas);   //cria o objeto teclado
-  lcd = new Lcd(portaLcd);                            //cria o objeto lcd
-  rfid = new RFID();                            //cria o objeto lcd
+
+Maquina::Maquina(Tranca *tranca2, Teclado *teclado2, Lcd *lcd2,RFID *rfid2)
+{
+  Estado = ESPERA;
+  tranca1 = tranca2;                  //cria o objeto traca
+  teclado = teclado2;   //cria o objeto teclado
+  lcd = lcd2;                            //cria o objeto lcd
+  rfid = rfid2;                            //cria o objeto lcd
   Serial.print("MAQUINA");
 };
 
