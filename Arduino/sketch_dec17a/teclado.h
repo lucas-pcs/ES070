@@ -8,8 +8,6 @@ char dicionarioTeclado[4][4] = { // Matriz de caracteres (mapeamento do teclado)
   {'7', '8', '9', 'C'},
   {'*', '0', '#', 'D'}
 };
-//byte linhas[4] = {A3, 8, 7, 6};
-//byte colunas[4] = {5, 4, 3, 2};
 
 class Teclado{
   private:
@@ -26,6 +24,7 @@ Teclado::Teclado(byte *linha, byte *coluna)
   linhas = linha;
   colunas = coluna;
   teclado_personalizado = new Keypad(makeKeymap(dicionarioTeclado), linha, coluna, nlinha, ncolunas);
+  Serial.print("Teclado INICIALIZADO"); 
 };
 
 char Teclado::leTeclado()

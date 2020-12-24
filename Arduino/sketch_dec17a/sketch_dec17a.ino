@@ -18,8 +18,23 @@ void loop() {
       maq->LeCartao();
     case ABRESENHA:
       maq->AbreSenha();
+    case NOVASENHA:
+      maq->NovaSenha();
   }
 }
+//
+//#define ESPERA    1
+//#define CADASTRO  2
+//#define ESCOLHER  3
+//#define REMOVER   4
+//#define LECARTAO  5
+//#define ABRESENHA 6
+//#define NOVASENHA 7
+//    void Espera();
+//    void Escolher();
+//    void LeCartao();
+//    void AbreSenha();
+//    void NovaSenha();
 
 //void setup() {  
 //  tranca1 = new Tranca(portaTranca);                  //cria o objeto traca

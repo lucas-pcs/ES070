@@ -16,7 +16,8 @@ class RFID{
 
 RFID::RFID(){
   SPI.begin();      // Inicia  SPI bus
-  mfrc522.PCD_Init();   // Inicia o módulo MFRC522 RFID  
+  mfrc522.PCD_Init();   // Inicia o módulo MFRC522 RFID
+  Serial.print("mfrc522 INICIALIZADO");  
 };
 
 byte* RFID::LeTag(){
