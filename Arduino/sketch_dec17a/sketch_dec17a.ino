@@ -28,15 +28,25 @@ void loop() {
   Serial.print(est);
   switch (est) {
     case ESPERA:
+      Serial.print("ESPERA");
       maq->Espera();
+      break;
     case ESCOLHER:
+      Serial.print("ESCOLHER");
       maq->Escolher();
+      break;
     case LECARTAO:
+      Serial.print("LECARTAO");
       maq->LeCartao();
+      break;
     case ABRESENHA:
+      Serial.print("ABRESENHA");
       maq->AbreSenha();
+      break;
     case NOVASENHA:
+      Serial.print("NOVASENHA");
       maq->NovaSenha();
+      break;
   }
 }
 //

@@ -115,6 +115,7 @@ void Maquina::Escolher()
   switch(letra){
     case 'A':
       Estado = ABRESENHA;
+      break;
     case 'B':
       if(strncmp(&senInput[0],&senha[0], 4)){
         Estado = NOVASENHA;
@@ -123,6 +124,7 @@ void Maquina::Escolher()
         Estado = ESPERA;
       }
       senInput = "";
+      break;
   }
 };
 
