@@ -9,6 +9,7 @@ void setup() {
 
 void loop() {
   int est = maq->getEstado();
+  Serial.print(est);
   switch (est) {
     case ESPERA:
       maq->Espera();
