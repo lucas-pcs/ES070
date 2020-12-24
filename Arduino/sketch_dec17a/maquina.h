@@ -75,7 +75,11 @@ void Maquina::Espera()
   readC = rfid->LeTag();
   if(strncmp((char *)&readC[0],(char *)&noCard[0], 4) != 0){
     //Vai pro estado le cartão
+    Serial.print((char *)&readC);
     Estado = LECARTAO;
+  }else if(strncmp((char *)&readC[0],(char *)&noCard[0], 4) == 0){
+    Estado = ESPERA;
+    Serial.print((char *)&readC);
   }else if (letra != ' '){
     Serial.print(letra);
     senInput += letra;
