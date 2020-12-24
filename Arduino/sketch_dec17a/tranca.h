@@ -20,7 +20,6 @@ Tranca::Tranca(int Porta)
   analogWrite(_Porta, 255);
   Serial.print("O tranca1 esta: ");
   Serial.println(_Porta);
-  
 }
 
 int Tranca::Porta()

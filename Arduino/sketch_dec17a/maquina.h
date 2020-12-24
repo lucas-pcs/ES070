@@ -55,6 +55,7 @@ Maquina::Maquina()
   teclado = new Teclado(portaLinhas, portaColunas);   //cria o objeto teclado
   lcd = new Lcd(portaLcd);                            //cria o objeto lcd
   rfid = new RFID();                            //cria o objeto lcd
+  Serial.print("MAQUINA");
 };
 
 void Maquina::setEstado(int estado)
