@@ -8,6 +8,7 @@ Lcd *lcd;           //Cria ponteiro para a tranca
 RFID *rfid;         //Cria ponteiro para a tranca
 
 void setup() {  
+  Serial.begin(9600);
   int  portaTranca = A2; // tranca
   byte portaLinhas[4] = {A3, 8, 7, 6}; // linha do teclado
   byte portaColunas[4] = {5, 4, 3, 2}; // coluna do teclaso
@@ -19,7 +20,6 @@ void setup() {
   rfid = new RFID();                            //cria o objeto lcd
   
   maq = new Maquina(tranca1, teclado, lcd, rfid);                  //cria o objeto maquina de estados
-  Serial.begin(9600);
 }
 
 void loop() {
