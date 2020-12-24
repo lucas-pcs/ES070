@@ -120,10 +120,6 @@ void Maquina::Escolher()
         Estado = ESPERA;
       }
       senInput = "";
-    case 'C':
-      Serial.print(letra);
-    case 'D':
-      Serial.print(letra);
   }
 };
 

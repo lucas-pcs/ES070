@@ -2,6 +2,14 @@
 
 Maquina *maq;
 
+#define ESPERA    1
+#define CADASTRO  2
+#define ESCOLHER  3
+#define REMOVER   4
+#define LECARTAO  5
+#define ABRESENHA 6
+#define NOVASENHA 7
+
 void setup() {  
   maq = new Maquina();                  //cria o objeto maquina de estados
   Serial.begin(9600);
