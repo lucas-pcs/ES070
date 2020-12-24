@@ -1,16 +1,14 @@
 #include "maquina.h"
 
-
-
 Maquina *maq;
 
-#define ESPERA    1
-#define CADASTRO  2
-#define ESCOLHER  3
-#define REMOVER   4
-#define LECARTAO  5
-#define ABRESENHA 6
-#define NOVASENHA 7
+//#define ESPERA    1
+//#define CADASTRO  2
+//#define ESCOLHER  3
+//#define REMOVER   4
+//#define LECARTAO  5
+//#define ABRESENHA 6
+//#define NOVASENHA 7
 
 
 Tranca *tranca1;    //Cria ponteiro para a tranca
