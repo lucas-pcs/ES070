@@ -7,45 +7,41 @@ Teclado *teclado;   //Cria ponteiro para a tranca
 Lcd *lcd;           //Cria ponteiro para a tranca
 RFID *rfid;         //Cria ponteiro para a tranca
 
-void setup() {  
+void setup() {
   Serial.begin(9600);
-  int  portaTranca = A2; // tranca
+  // declaracao de variaveis
+  int  portaTranca = A2; // pino ligado ao relé que libera a tranca, A2 = pino 16
   byte portaLinhas[4] = {A3, 8, 7, 6}; // linha do teclado
   byte portaColunas[4] = {5, 4, 3, 2}; // coluna do teclaso
-  byte portaLcd = 0x27; // porta do módulo i2c
+  byte portaLcd = 0x27; // endereço do módulo i2c
 
   tranca1 = new Tranca(portaTranca);                  //cria o objeto traca
   teclado = new Teclado(portaLinhas, portaColunas);   //cria o objeto teclado
   lcd = new Lcd(portaLcd);                            //cria o objeto lcd
-  rfid = new RFID();                            //cria o objeto lcd
-  
+  rfid = new RFID();                                  //cria o objeto lcd
+
   maq = new Maquina(tranca1, teclado, lcd, rfid);                  //cria o objeto maquina de estados
 }
 
 void loop() {
   int est = maq->getEstado();
-  Serial.print(" estado : ");
-  Serial.print(est);
   switch (est) {
     case ESPERA:
-      Serial.print("ESPERA");
       maq->Espera();
       break;
     case ESCOLHER:
-      Serial.print("ESCOLHER");
       maq->Escolher();
       break;
     case LECARTAO:
-      Serial.print("LECARTAO");
       maq->LeCartao();
       break;
     case ABRESENHA:
-      Serial.print("ABRESENHA");
       maq->AbreSenha();
       break;
     case NOVASENHA:
-      Serial.print("NOVASENHA");
       maq->NovaSenha();
+      break;
+    default:
       break;
   }
 }
@@ -63,7 +59,7 @@ void loop() {
 //    void AbreSenha();
 //    void NovaSenha();
 
-//void setup() {  
+//void setup() {
 //  tranca1 = new Tranca(portaTranca);                  //cria o objeto traca
 //  teclado = new Teclado(portaLinhas, portaColunas);   //cria o objeto teclado
 //  lcd = new Lcd(portaLcd);                            //cria o objeto lcd

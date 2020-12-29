@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-class Lcd{
+class Lcd {
   private:
     byte Porta;
     LiquidCrystal_I2C *lcdInt;
@@ -15,9 +15,9 @@ class Lcd{
 Lcd::Lcd(byte porta)
 {
   Porta = porta;
-  lcdInt = new LiquidCrystal_I2C(Porta, 2,1,0,4,5,6,7,3, POSITIVE); 
-  lcdInt->begin (16,2);
-// Alterar o endereço conforme modulo I2C
+  lcdInt = new LiquidCrystal_I2C(Porta, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
+  lcdInt->begin (16, 2);
+  // Alterar o endereço conforme modulo I2C
 };
 
 void Lcd::escreveTela(String texto, int linha)
@@ -29,14 +29,12 @@ void Lcd::escreveTela(String texto, int linha)
 void Lcd::limpaTela()
 {
   lcdInt->clear();
-  lcdInt->setCursor(0, 0); 
+  lcdInt->setCursor(0, 0);
 };
 
 void Lcd::escreveSenha(String texto, String senha)
 {
-    limpaTela();
-    escreveTela(texto, 0);
-    escreveTela(senha, 1);
-    delay(3000);
-    limpaTela();
+  limpaTela();
+  escreveTela(texto, 0);
+  escreveTela(senha, 1);
 };
