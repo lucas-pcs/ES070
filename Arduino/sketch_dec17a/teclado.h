@@ -29,10 +29,19 @@ Teclado::Teclado(byte *linha, byte *coluna)
 
 char Teclado::leTeclado()
 {
-  char leitura_teclas = teclado_personalizado->getKey(); // Atribui a variavel a leitura do teclado
+// código usado para simular teclado via serial
+//  char leitura_teclas = Serial.read();
+  
+  char leitura_teclas =teclado_personalizado->getKey(); // Atribui a variavel a leitura do teclado
   if (leitura_teclas) {                                  // Se alguma tecla foi pressionada
+    Serial.println(leitura_teclas);
     return leitura_teclas;                               // retorna tecla pressionada
   }
+  // código usado para simular teclado via serial
+//  else if (((leitura_teclas >= '0') && (leitura_teclas <= '9')  )|| (leitura_teclas == 'A')) {
+//    Serial.println(leitura_teclas);
+//    return leitura_teclas; 
+//  }
   else {
     return ' ';                                          // se nao, retorna vazio.
   }

@@ -37,6 +37,7 @@ bool Tranca::Estado()
 void Tranca::Abre()
 {
   analogWrite(_Porta, 0);
+  Serial.println("Abril");
   _Estado = true;
 }
 

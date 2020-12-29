@@ -93,7 +93,6 @@ void Maquina::Espera()
   //  }else
   // retorna diferente de  null se uma tecla foi pressionada
   if (letra != ' ') {
-    Serial.print(letra);
     senInput += letra;
     lcd->escreveSenha("senha", senInput);
 
@@ -141,9 +140,10 @@ void Maquina::Escolher()
 };
 
 void Maquina::AbreSenha() {
-  if (strncmp(&senInput[0], &senha[0], 4)) {
-    tranca1->AbreeFecha();
+  Serial.println("Abre Senha");
+  if (senha.compareTo(senInput) == 0  ) {
     lcd->escreveSenha("Senha", "Correto");
+    tranca1->AbreeFecha();
   } else {
     lcd->escreveSenha("Senha", "Incorreta");
   }

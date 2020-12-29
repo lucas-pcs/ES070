@@ -36,5 +36,9 @@ void Lcd::escreveSenha(String texto, String senha)
 {
   limpaTela();
   escreveTela(texto, 0);
+  Serial.print("DEBUG: ");
+  Serial.println(texto);
   escreveTela(senha, 1);
+  Serial.print("DEBUG: ");
+  Serial.println(senha);
 };
