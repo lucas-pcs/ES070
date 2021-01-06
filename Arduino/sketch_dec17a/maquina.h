@@ -1,41 +1,36 @@
-#include <string.h>
 #include "teclado.h"
 #include "tranca.h"
 #include "lcd.h"
 #include "rfid.h"
+#include "senha.h"
 
 //Estados
-#define ESPERA    1
-#define CADASTRO  2
-#define ESCOLHER  3
-#define REMOVER   4
-#define LECARTAO  5
-#define ABRESENHA 6
-#define NOVASENHA 7
+#define ESPERA     1
+#define CADASTRO   2
+#define ESCOLHER   3
+#define REMOVER    4
+#define LECARTAO   5
+#define ABRESENHA  6
+#define NOVASENHA  7
+#define TROCASENHA 8
+#define MENUMESTRE 9
+#define EDITASENHA 10
 
-// variaveis mocadas para teste
-String senha = "1234";
-String senhaADM = "1235";
-byte readCard[4] = {0x5A, 0xA8, 0xED, 0x80};  //tag do nosso RFID -> classe senha
-byte noCard[4] = {0x00, 0x00, 0x00, 0x00};  //leitura vazia do RFID = nocard
 byte *readC;  //tag lida
 
 class Maquina
 {
   private:
     int Estado;
-    // conta quantas vezes o teclado foi apertado
-    int countTeclado;
-
-    // senha que o usuario colocou
-    String senInput;
-
+    int countTeclado;   // conta quantas vezes o teclado foi apertado
+    String senInput;    // senha que o usuario colocou
+    int indexSenha;
     Tranca *tranca1;    //Cria ponteiro para objeto do tipo tranca
     Teclado *teclado;   //Cria ponteiro para objeto do tipo teclado
     Lcd *lcd;           //Cria ponteiro para objeto do tipo lcd
     RFID *rfid;         //Cria ponteiro para objeto do tipo rfid
-  public:
-    // metodos
+    Senha bancoSenha;
+  public:  // metodos
     Maquina();        // metodo que coloca a maquina de estados no estado ESPERA
     Maquina(Tranca *tranca2, Teclado *teclado2, Lcd *lcd2, RFID *rfid2);
     int getEstado();
@@ -45,15 +40,19 @@ class Maquina
     void LeCartao();
     void AbreSenha();
     void NovaSenha();
+    void TrocaSenha();
+    void MenuMestre();
+    void EditaSenha();
+    void Remove();
 };
 
 // construtor 1
 Maquina::Maquina()
 {
+  senInput = "";
   Estado = ESPERA;
   Serial.println("MAQUINA metodo 1 inicializada");
 };
-
 
 // construtor 2
 Maquina::Maquina(Tranca *tranca2, Teclado *teclado2, Lcd *lcd2, RFID *rfid2)
@@ -82,20 +81,14 @@ void Maquina::Espera()
 {
   char letra;
   letra = teclado->leTeclado();
-  //  readC = rfid->LeTag();
-  //  if(strncmp((char *)&readC[0],(char *)&noCard[0], 4) != 0){
-  //    //Vai pro estado le cartão
-  //    Serial.print((char *)&readC);
-  //    Estado = LECARTAO;
-  //  }else if(strncmp((char *)&readC[0],(char *)&noCard[0], 4) == 0){
-  //    Estado = ESPERA;
-  //    Serial.print((char *)&readC);
-  //  }else
-  // retorna diferente de  null se uma tecla foi pressionada
+  readC = rfid->LeTag();
+  if (bancoSenha.ComparanoRfid(readC)) {
+    Estado = LECARTAO;
+  }
+  //retorna diferente de  null se uma tecla foi pressionada
   if (letra != ' ') {
     senInput += letra;
     lcd->escreveSenha("senha", senInput);
-
     countTeclado ++;
   }
   if (countTeclado == 4) {
@@ -106,7 +99,7 @@ void Maquina::Espera()
 
 void Maquina::LeCartao()
 {
-  if (strncmp((char *)&readC[0], (char *)&readCard[0], 4) == 0) {
+  if (bancoSenha.ComparaRfid(readC)) {
     tranca1->AbreeFecha();
     lcd->escreveSenha("Card", "Correto");
   } else {
@@ -126,12 +119,100 @@ void Maquina::Escolher()
       Estado = ABRESENHA;
       break;
     case 'B':
-      if (strncmp(&senInput[0], &senha[0], 4)) {
-        Estado = NOVASENHA;
+      if (bancoSenha.ComparaSenha(senInput)) {
+        indexSenha = bancoSenha.ReturnIndexSenha(senInput);
+        senInput = "";
+        if (indexSenha == -1) {
+          lcd->escreveSenha("Erro index", "");
+          senInput = "";
+          Estado = ESPERA;
+        } else {
+          Estado = TROCASENHA;
+        }
       } else {
         lcd->escreveSenha("Senha", "Incorreta");
         Estado = ESPERA;
+        senInput = "";
       }
+      break;
+    case 'C':
+      if (bancoSenha.ComparaSenhaMestre(senInput)) {
+        Estado = MENUMESTRE;
+      } else {
+        lcd->escreveSenha("Senha Mestre", "Incorreta");
+        senInput = "";
+        Estado = ESPERA;
+      }
+      Serial.print ("mestre");
+      Serial.println (Estado);
+      senInput = "";
+      break;
+    case '#':
+      indexSenha = 0;
+      Estado = ESPERA;
+      senInput = "";
+      break;
+    default:
+      break;
+  }
+};
+
+void Maquina::MenuMestre()
+{
+  char letra;
+  countTeclado = 0;
+  letra = teclado->leTeclado();
+  switch (letra) {
+    case 'A':
+      indexSenha = 25;
+      Estado = TROCASENHA;
+      senInput = "";
+      break;
+    case 'B'://Editar senha
+      indexSenha = 0;
+      Estado = EDITASENHA;
+      break;
+    case '#':
+      indexSenha = 0;
+      Estado = ESPERA;
+      senInput = "";
+      break;
+    case 'D':
+      break;
+    default:
+      break;
+  }
+};
+
+void Maquina::EditaSenha()
+{
+  char letra;
+  countTeclado = 0;
+  lcd->escreveSenha(String(indexSenha), bancoSenha.ReturnSenha(indexSenha));
+  letra = teclado->leTeclado();
+  switch (letra) {
+    case 'A':
+      Estado = TROCASENHA;
+      senInput = "";
+      break;
+    case 'B'://Editar senha
+      Estado = REMOVER;
+      break;
+    case 'C':
+      indexSenha++;
+      if (indexSenha > 9) {
+        indexSenha = 0;
+      }
+      break;
+    case 'D':
+      indexSenha--;
+      if (indexSenha < 0) {
+        indexSenha = 9;
+      }
+      break;
+    case '#':
+      indexSenha = 0;
+      Estado = ESPERA;
       senInput = "";
       break;
     default:
@@ -140,8 +221,7 @@ void Maquina::Escolher()
 };
 
 void Maquina::AbreSenha() {
-  Serial.println("Abre Senha");
-  if (senha.compareTo(senInput) == 0  ) {
+  if (bancoSenha.ComparaSenha(senInput)) {
     lcd->escreveSenha("Senha", "Correto");
     tranca1->AbreeFecha();
   } else {
@@ -151,24 +231,46 @@ void Maquina::AbreSenha() {
   Estado = ESPERA;
 };
 
-
 void Maquina::NovaSenha() {
-  lcd->escreveSenha("Digite a Senha", senInput);
   char letra;
   letra = teclado->leTeclado();
   readC = rfid->LeTag();
-  if (strncmp((char *)&readC[0], (char *)&noCard[0], 4) != 0) {
-    //Vai pro estado le cartão
-    strcpy((char *)&readCard, (char *)&readC);
-    Estado = ESPERA;
+  if (bancoSenha.ComparanoRfid(readC)) {
+    Estado = LECARTAO;
   } else if (letra != ' ') {
+    lcd->escreveSenha("Digite a Senha", senInput);
     Serial.print(letra);
     senInput += letra;
     lcd->escreveSenha("senha", senInput);
     countTeclado ++;
   }
   if (countTeclado == 4) {
-    senha = senInput;
+    String retorno = bancoSenha.NovaSenha(senInput);
+    lcd->escreveSenha(retorno, "");
+    senInput = "";
     Estado = ESPERA;
   }
 };
+
+void Maquina::TrocaSenha() {
+  char letra;
+  letra = teclado->leTeclado();
+  if (letra != ' ') {
+    lcd->escreveSenha("Digite a Senha", senInput);
+    Serial.print(letra);
+    senInput += letra;
+    lcd->escreveSenha("senha", senInput);
+    countTeclado ++;
+  }
+  if (countTeclado == 4) {
+    bancoSenha.TrocaSenha(senInput, indexSenha);
+    lcd->escreveSenha("Senha salva", "");
+    senInput = "";
+    Estado = ESPERA;
+  }
+};
+
+void Maquina::Remove(){
+  bancoSenha.RemoveSenha(indexSenha);
+  lcd->escreveSenha("Senha removida", "");
+}

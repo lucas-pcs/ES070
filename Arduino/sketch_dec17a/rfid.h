@@ -1,8 +1,9 @@
 #include <SPI.h>
+//#include <EEPROM.h>
 #include <MFRC522.h>
-#include <EEPROM.h>
 
-class RFID {
+class RFID
+{
   private:
     byte readCard[4]; // Array that will hold UID of the RFID card.
     int successRead;
@@ -17,7 +18,7 @@ class RFID {
 RFID::RFID() {
   SPI.begin();      // Inicia  SPI bus
   mfrc522.PCD_Init();   // Inicia o módulo MFRC522 RFID
-  Serial.print("mfrc522 INICIALIZADO");
+  Serial.println("mfrc522 INICIALIZADO");
 };
 
 byte* RFID::LeTag() {
@@ -35,6 +36,6 @@ byte* RFID::LeTag() {
 
 void RFID::CadastraTag() {
   for (int i = 0; i < mfrc522.uid.size; i++) {
-    EEPROM.write(i, readCard[i] ); // Escreve a tag na memória eeprom
+    //EEPROM.write(i, readCard[i] ); // Escreve a tag na memória eeprom
   }
 };

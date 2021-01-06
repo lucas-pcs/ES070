@@ -19,8 +19,7 @@ void setup() {
   teclado = new Teclado(portaLinhas, portaColunas);   //cria o objeto teclado
   lcd = new Lcd(portaLcd);                            //cria o objeto lcd
   rfid = new RFID();                                  //cria o objeto lcd
-
-  maq = new Maquina(tranca1, teclado, lcd, rfid);                  //cria o objeto maquina de estados
+  maq = new Maquina(tranca1, teclado, lcd, rfid);     //cria o objeto maquina de estados
 }
 
 void loop() {
@@ -41,6 +40,18 @@ void loop() {
     case NOVASENHA:
       maq->NovaSenha();
       break;
+    case TROCASENHA:
+      maq->TrocaSenha();
+      break;
+    case MENUMESTRE:
+      maq->MenuMestre();
+      break;
+    case EDITASENHA:
+      maq->EditaSenha();
+      break;
+    case REMOVER:
+      maq->EditaSenha();
+      break;
     default:
       break;
   }
@@ -53,6 +64,10 @@ void loop() {
 //#define LECARTAO  5
 //#define ABRESENHA 6
 //#define NOVASENHA 7
+//#define TROCASENHA 8
+//#define MENUMESTRE 9
+//#define EDITASENHA 10
+
 //    void Espera();
 //    void Escolher();
 //    void LeCartao();
