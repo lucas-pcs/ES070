@@ -12,6 +12,7 @@
 #include "lcd.h"
 #include "rfid.h"
 #include "senha.h"
+#include "sensor_pir.h"
 
 //Estados
 #define ESPERA         1
@@ -40,9 +41,10 @@ class Maquina
     Lcd *lcd;           //Cria ponteiro para objeto do tipo lcd
     RFID *rfid;         //Cria ponteiro para objeto do tipo rfid
     Senha bancoSenha;
+    SensorPIR *sensorpir; ////Cria ponteiro para objeto do tipo sensorPIR
   public:  // metodos
     Maquina();        // metodo que coloca a maquina de estados no estado ESPERA
-    Maquina(Tranca *tranca2, Teclado *teclado2, Lcd *lcd2, RFID *rfid2);
+    Maquina(Tranca *tranca2, Teclado *teclado2, Lcd *lcd2, RFID *rfid2, SensorPIR *sensorpir1);
     int getEstado();
     void setEstado(int estado);
     void Espera();
@@ -67,7 +69,7 @@ class Maquina
 /* que controla RFID                      
 /* Output params:      n/a                         
 /* ************************************************************************************************ */
-Maquina::Maquina(Tranca *tranca2, Teclado *teclado2, Lcd *lcd2, RFID *rfid2)
+Maquina::Maquina(Tranca *tranca2, Teclado *teclado2, Lcd *lcd2, RFID *rfid2, SensorPIR *sensorpir1)
 {
   senInput = "";
   Estado = ESPERA;
@@ -77,6 +79,7 @@ Maquina::Maquina(Tranca *tranca2, Teclado *teclado2, Lcd *lcd2, RFID *rfid2)
   lcd = lcd2;                         //cria o objeto lcd
   rfid = rfid2;                       //cria o objeto lcd
   Serial.println("MAQUINA metodo 2");
+  sensorpir = sensorpir1;
 };
 
 /* ************************************************************************************************ */
@@ -110,8 +113,15 @@ int Maquina::getEstado()
 void Maquina::Espera()
 {
   char letra;
+  int sensorPIRteste;
+
+  sensorPIRteste = sensorpir->leSensorPIR();
+  if(sensorPIRteste == HIGH){
+    Serial.println("sensor de movimento ativado");
+  }
   letra = teclado->leTeclado();
-  readC = rfid->LeTag();
+  // readC = rfid->LeTag();
+  
   if (bancoSenha.ComparanoRfid(readC)) {
     Estado = LECARTAO;
   }
