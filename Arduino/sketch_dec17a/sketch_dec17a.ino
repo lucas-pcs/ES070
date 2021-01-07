@@ -50,7 +50,7 @@ void loop() {
       maq->EditaSenha();
       break;
     case REMOVER:
-      maq->EditaSenha();
+      maq->Remove();
       break;
     default:
       break;

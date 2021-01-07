@@ -5,16 +5,17 @@
 #include "senha.h"
 
 //Estados
-#define ESPERA     1
-#define CADASTRO   2
-#define ESCOLHER   3
-#define REMOVER    4
-#define LECARTAO   5
-#define ABRESENHA  6
-#define NOVASENHA  7
-#define TROCASENHA 8
-#define MENUMESTRE 9
-#define EDITASENHA 10
+#define ESPERA         1
+#define CADASTRO       2
+#define ESCOLHER       3
+#define REMOVER        4
+#define LECARTAO       5
+#define ABRESENHA      6
+#define NOVASENHA      7
+#define TROCASENHA     8
+#define MENUMESTRE     9
+#define EDITASENHA    10
+#define CADASTRACARD  11
 
 byte *readC;  //tag lida
 
@@ -44,6 +45,8 @@ class Maquina
     void MenuMestre();
     void EditaSenha();
     void Remove();
+    void goToEspera();
+    void CadastraCard();
 };
 
 // construtor 1
@@ -100,13 +103,12 @@ void Maquina::Espera()
 void Maquina::LeCartao()
 {
   if (bancoSenha.ComparaRfid(readC)) {
-    tranca1->AbreeFecha();
     lcd->escreveSenha("Card", "Correto");
+    tranca1->AbreeFecha();
   } else {
     lcd->escreveSenha("Card", "Incorreto");
   }
-  senInput = "";
-  Estado = ESPERA;
+  goToEspera();
 };
 
 void Maquina::Escolher()
@@ -119,20 +121,18 @@ void Maquina::Escolher()
       Estado = ABRESENHA;
       break;
     case 'B':
+      senInput = "";
       if (bancoSenha.ComparaSenha(senInput)) {
         indexSenha = bancoSenha.ReturnIndexSenha(senInput);
-        senInput = "";
         if (indexSenha == -1) {
           lcd->escreveSenha("Erro index", "");
-          senInput = "";
-          Estado = ESPERA;
+          goToEspera();
         } else {
           Estado = TROCASENHA;
         }
       } else {
         lcd->escreveSenha("Senha", "Incorreta");
-        Estado = ESPERA;
-        senInput = "";
+        goToEspera();
       }
       break;
     case 'C':
@@ -140,17 +140,14 @@ void Maquina::Escolher()
         Estado = MENUMESTRE;
       } else {
         lcd->escreveSenha("Senha Mestre", "Incorreta");
-        senInput = "";
-        Estado = ESPERA;
+        goToEspera();
       }
       Serial.print ("mestre");
       Serial.println (Estado);
       senInput = "";
       break;
     case '#':
-      indexSenha = 0;
-      Estado = ESPERA;
-      senInput = "";
+      goToEspera();
       break;
     default:
       break;
@@ -172,10 +169,12 @@ void Maquina::MenuMestre()
       indexSenha = 0;
       Estado = EDITASENHA;
       break;
-    case '#':
+    case 'C'://Editar senha
       indexSenha = 0;
-      Estado = ESPERA;
-      senInput = "";
+      Estado = CADASTRACARD;
+      break;
+    case '#':
+      goToEspera();
       break;
     case 'D':
       break;
@@ -193,7 +192,9 @@ void Maquina::EditaSenha()
   switch (letra) {
     case 'A':
       Estado = TROCASENHA;
+      countTeclado = 0;
       senInput = "";
+      Serial.print(indexSenha);
       break;
     case 'B'://Editar senha
       Estado = REMOVER;
@@ -211,9 +212,7 @@ void Maquina::EditaSenha()
       }
       break;
     case '#':
-      indexSenha = 0;
-      Estado = ESPERA;
-      senInput = "";
+      goToEspera();
       break;
     default:
       break;
@@ -227,8 +226,7 @@ void Maquina::AbreSenha() {
   } else {
     lcd->escreveSenha("Senha", "Incorreta");
   }
-  senInput = "";
-  Estado = ESPERA;
+  goToEspera();
 };
 
 void Maquina::NovaSenha() {
@@ -247,8 +245,7 @@ void Maquina::NovaSenha() {
   if (countTeclado == 4) {
     String retorno = bancoSenha.NovaSenha(senInput);
     lcd->escreveSenha(retorno, "");
-    senInput = "";
-    Estado = ESPERA;
+    goToEspera();
   }
 };
 
@@ -263,14 +260,29 @@ void Maquina::TrocaSenha() {
     countTeclado ++;
   }
   if (countTeclado == 4) {
+    Serial.print(indexSenha);
     bancoSenha.TrocaSenha(senInput, indexSenha);
     lcd->escreveSenha("Senha salva", "");
-    senInput = "";
-    Estado = ESPERA;
+    goToEspera();
   }
 };
 
-void Maquina::Remove(){
+void Maquina::Remove() {
   bancoSenha.RemoveSenha(indexSenha);
   lcd->escreveSenha("Senha removida", "");
-}
+  goToEspera();
+};
+
+void Maquina::CadastraCard() {
+  readC = rfid->LeTag();
+  if (bancoSenha.ComparanoRfid(readC)) {
+    bancoSenha.NovoCard(readC);
+    goToEspera();
+  }
+};
+
+void Maquina::goToEspera() {
+  countTeclado = 0;
+  senInput = "";
+  Estado = ESPERA;
+};

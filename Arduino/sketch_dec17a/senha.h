@@ -19,36 +19,36 @@ class Senha
     String ReturnSenha(int index);
     int ReturnIndexSenha(String input);
     int TrocaSenha(String input, int index);
-    bool ComparanoRfid(byte *Card);
-    bool ComparaRfid(byte *Card);
     void TrocaSenhaMestre(String input);
     bool ComparaSenhaMestre(String input);
     void RemoveSenha(int index);
+    bool ComparanoRfid(byte *Card);
+    bool ComparaRfid(byte *Card);
+    String NovoCard(byte * Card);
+    void RemoveCard(int index);
 };
 
 Senha::Senha()
 {
-  // LIMPA VETOR E CRIA SENHA INICIAL
-  //for (int i = 0; i < 255; i++) {
-  //  Serial.print (EEPROM.read(i));
-  //  EEPROM.write(i, 0);
-  //}
-  //NovaSenha("1234");
-  //NovaSenha("1235");
-  String input = "1212";
-  int enderecoSenha = 110;
-  for (int y = 0; y < 4; y++) {
-    EEPROM.write(enderecoSenha + y, input[y]);
-    Serial.print (EEPROM.read(enderecoSenha + y));
-    Serial.println (input[y]);
-  }
-
-
-  Serial.println ("");
-  for (int i = 0; i < 255; i++) {
-    Serial.print (EEPROM.read(i));
-  }
-  Serial.println ("");
+  //   LIMPA VETOR E CRIA SENHA INICIAL
+  //  for (int i = 0; i < 255; i++) {
+  //    Serial.print (EEPROM.read(i));
+  //    EEPROM.write(i, 0);
+  //  }
+  //  NovaSenha("1234");
+  //  NovaSenha("1235");
+  //  String input = "1212";
+  //  int enderecoSenha = 110;
+  //  for (int y = 0; y < 4; y++) {
+  //    EEPROM.write(enderecoSenha + y, input[y]);
+  //    Serial.print (EEPROM.read(enderecoSenha + y));
+  //    Serial.println (input[y]);
+  //  }
+  //  Serial.println ("");
+  //  for (int i = 0; i < 255; i++) {
+  //    Serial.print (EEPROM.read(i));
+  //  }
+  //  Serial.println ("");
 }
 
 bool Senha::ComparaSenha(String input)
@@ -100,6 +100,16 @@ int Senha::TrocaSenha(String input, int index)
     int enderecoSenha = (index * 4) + 10 + y;
     EEPROM.write(enderecoSenha, input[y]);
   }
+  EEPROM.write(index, 1);
+}
+
+void Senha::RemoveSenha(int index)
+{
+  int enderecoSenha = (index * 4) + 10;
+  for (int i = enderecoSenha; i < enderecoSenha + 4; i++) {
+    Serial.print (EEPROM.read(i));
+    EEPROM.write(index, 0);
+  }
 }
 
 int Senha::ReturnIndexSenha(String input)
@@ -140,34 +150,6 @@ String Senha::ReturnSenha(int index)
   return mensagem;
 }
 
-bool Senha::ComparaRfid(byte * Card)
-{
-  bool compare = true;
-  for (int i = 0; i < sizeof(readCard); i++) {
-    if (readCard[i] != Card[i]) {
-      compare = false;
-    }
-  }
-  if (compare) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-bool Senha::ComparanoRfid(byte * Card)
-{
-  bool compare = true;
-  for (int i = 0; i < sizeof(noCard); i++) {
-    if (noCard[i] != Card[i]) {
-      compare = false;
-    }
-  }
-  if (compare) {
-    return false;
-  }
-}
-
 bool Senha::ComparaSenhaMestre(String input)
 {
   String mensagem = "";
@@ -186,11 +168,66 @@ bool Senha::ComparaSenhaMestre(String input)
   return false;
 }
 
-void Senha::RemoveSenha(int index)
+
+
+bool Senha::ComparanoRfid(byte * Card)
 {
-  int enderecoSenha = (index * 4) + 10;
+  bool compare = true;
+  for (int i = 0; i < sizeof(noCard); i++) {
+    if (noCard[i] != Card[i]) {
+      compare = false;
+    }
+  }
+  if (compare) {
+    return false;
+  }
+}
+
+bool Senha::ComparaRfid(byte * Card)
+{
+  bool compare = true;
+  for (int i = 200; i < 210; i++) {
+    memoriaCard[i] = EEPROM.read(i);
+    if (memoriaCard[i] == 1) {
+      compare = true;
+      for (int y = 0; y < sizeof(noCard); y++) {
+        int enderecoSenha = (i * 4) + 210 + y;
+        if (EEPROM.read(enderecoSenha) != Card[y]) {
+          compare = false;
+        }
+      }
+      if (compare) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+String Senha::NovoCard(byte * Card)
+{
+  for (int i = 200; i < 210; i++) {
+    Serial.print ("Espaço ");
+    Serial.println (EEPROM.read(i));
+    memoriaSenha[i] = EEPROM.read(i);
+    if (memoriaSenha[i] == 0) {
+      for (int y = 0; y < 4; y++) {
+        int enderecoSenha = (i * 4) + 210 + y;
+        EEPROM.write(enderecoSenha, Card[y]);
+      }
+      EEPROM.write(i, 1);
+      return "senha salva";
+    }
+  }
+  return "memoria cheia";
+}
+
+void Senha::RemoveCard(int index)
+{
+  int enderecoSenha = (index * 4) + 210;
   for (int i = enderecoSenha; i < enderecoSenha + 4; i++) {
     Serial.print (EEPROM.read(i));
-    EEPROM.write(index, 0);
+    EEPROM.write(i, 0);
   }
+  EEPROM.write(index, 0);
 }
