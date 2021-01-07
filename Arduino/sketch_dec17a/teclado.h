@@ -55,10 +55,17 @@ char Teclado::leTeclado()
 //  char leitura_teclas = Serial.read();
   
   char leitura_teclas =teclado_personalizado->getKey(); // Atribui a variavel a leitura do teclado
+  char leitura_bluetooth = Serial.read();               // Atribui a variavel a leitura do bluetooth
   if (leitura_teclas) {                                  // Se alguma tecla foi pressionada
     Serial.println(leitura_teclas);
     return leitura_teclas;                               // retorna tecla pressionada
   }
+  
+  else if (leitura_bluetooth){                           // Se alguma tecla do bluetooth foi pressionada
+    Serial.println(leitura_teclas);
+    return leitura_bluetooth;                            // retorna tecla pressionada
+  }
+  
   // código usado para simular teclado via serial
   else {
 //  if (((leitura_teclas >= '0') && (leitura_teclas <= '9')  ) || ((leitura_teclas == 'A') || (leitura_teclas == 'B') || (leitura_teclas == 'C') || (leitura_teclas == 'D') || (leitura_teclas == '#'))) {
