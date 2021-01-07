@@ -62,7 +62,7 @@ char Teclado::leTeclado()
   }
   
   else if (leitura_bluetooth){                           // Se alguma tecla do bluetooth foi pressionada
-    Serial.println(leitura_teclas);
+    Serial.println(leitura_bluetooth);
     return leitura_bluetooth;                            // retorna tecla pressionada
   }
   
