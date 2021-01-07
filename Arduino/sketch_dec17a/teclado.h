@@ -1,3 +1,13 @@
+/* ************************************************************************************************ */
+/* File name:          teclado.h               
+/* File description:   Arquivo com funções de controle do teclado                     
+/* com senhas salvas
+/* Author name:        Luiz Furlan                       
+/* Author name:        Lucas Pereira                     
+/* Author name:        Gabriel Murizine                  
+/* Creation date:                               
+/* Revision date:                               
+/* ************************************************************************************************ */
 #include <Keypad.h>
 
 byte nlinhas = 4; // n de linhas
@@ -19,6 +29,12 @@ class Teclado {
     char leTeclado();
 };
 
+/* ************************************************************************************************ */
+/* Method name:        Teclado                     
+/* Method description: Função para inicializar teclado
+/* Input params:       byte *linha, byte *coluna : pinos onde estão ligados terminais do teclado                      
+/* Output params:      n/a                         
+/* ************************************************************************************************ */
 Teclado::Teclado(byte *linha, byte *coluna)
 {
   linhas = linha;
@@ -27,6 +43,12 @@ Teclado::Teclado(byte *linha, byte *coluna)
   Serial.println("Teclado INICIALIZADO");
 };
 
+/* ************************************************************************************************ */
+/* Method name:        leTeclado                     
+/* Method description: retorna tecla que foi pressionada
+/* Input params:       n/a                     
+/* Output params:      retorna valor caso tecla seja pressionada, ou vazio                         
+/* ************************************************************************************************ */
 char Teclado::leTeclado()
 {
 // código usado para simular teclado via serial

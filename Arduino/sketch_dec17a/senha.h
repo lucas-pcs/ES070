@@ -1,3 +1,13 @@
+/* ************************************************************************************************ */
+/* File name:          senha.h               
+/* File description:   Arquivo com funções de gravação e escrita no banco EEPROM, e de comparação                     
+/* com senhas salvas
+/* Author name:        Luiz Furlan                       
+/* Author name:        Lucas Pereira                     
+/* Author name:        Gabriel Murizine                  
+/* Creation date:                               
+/* Revision date:                               
+/* ************************************************************************************************ */
 #include <EEPROM.h>
 #include <string.h>
 
@@ -6,9 +16,9 @@ class Senha
     // variaveis
   private:
     // variaveis mocadas para teste
-    byte readCard[4] = {0x5A, 0xA8, 0xED, 0x80};  //tag do nosso RFID -> classe senha
+    // byte readCard[4] = {0x5A, 0xA8, 0xED, 0x80};  //tag do nosso RFID -> classe senha
+    
     byte noCard[4] = {0x00, 0x00, 0x00, 0x00};  //leitura vazia do RFID = nocard
-
     byte memoriaSenha[10];
     byte memoriaCard[10];
     // metodos
@@ -18,7 +28,7 @@ class Senha
     String NovaSenha(String input);
     String ReturnSenha(int index);
     int ReturnIndexSenha(String input);
-    int TrocaSenha(String input, int index);
+    void TrocaSenha(String input, int index);
     void TrocaSenhaMestre(String input);
     bool ComparaSenhaMestre(String input);
     void RemoveSenha(int index);
@@ -28,29 +38,23 @@ class Senha
     void RemoveCard(int index);
 };
 
+/* ************************************************************************************************ */
+/* Method name:        Senha                     
+/* Method description: IConstrutor da classe (usada para setar senhas iniciais)
+/* Input params:       n/a                         
+/* Output params:      n/a                         
+/* ************************************************************************************************ */
 Senha::Senha()
 {
-  //   LIMPA VETOR E CRIA SENHA INICIAL
-  //  for (int i = 0; i < 255; i++) {
-  //    Serial.print (EEPROM.read(i));
-  //    EEPROM.write(i, 0);
-  //  }
-  //  NovaSenha("1234");
-  //  NovaSenha("1235");
-  //  String input = "1212";
-  //  int enderecoSenha = 110;
-  //  for (int y = 0; y < 4; y++) {
-  //    EEPROM.write(enderecoSenha + y, input[y]);
-  //    Serial.print (EEPROM.read(enderecoSenha + y));
-  //    Serial.println (input[y]);
-  //  }
-  //  Serial.println ("");
-  //  for (int i = 0; i < 255; i++) {
-  //    Serial.print (EEPROM.read(i));
-  //  }
-  //  Serial.println ("");
+  //Ultilizar para cadastrar as senhas iniciais
 }
 
+/* ************************************************************************************************ */
+/* Method name:        ComparaSenha                     
+/* Method description: Compara senha recebida com banco e informa se esta correta ou não
+/* Input params:       String input : senha digitada pelo usuário                      
+/* Output params:      bool : retorna true em caso da senha correta, e false caso incorreta                        
+/* ************************************************************************************************ */
 bool Senha::ComparaSenha(String input)
 {
   String mensagem = "";
@@ -76,6 +80,12 @@ bool Senha::ComparaSenha(String input)
   return false;
 }
 
+/* ************************************************************************************************ */
+/* Method name:        NovaSenha                     
+/* Method description: Adiciona senha recebida, caso haja espaço, no bd
+/* Input params:       String input : senha digitada pelo usuário                        
+/* Output params:      String : retorna informação de sucesso ou erro                       
+/* ************************************************************************************************ */
 String Senha::NovaSenha(String input)
 {
   for (int i = 0; i < 10; i++) {
@@ -94,7 +104,13 @@ String Senha::NovaSenha(String input)
   return "memoria cheia";
 }
 
-int Senha::TrocaSenha(String input, int index)
+/* ************************************************************************************************ */
+/* Method name:        TrocaSenha                     
+/* Method description: Troca a senha dalva no bd
+/* Input params:       String input: senha digitada pelo usuário, int index: pocição da senha no vetor                        
+/* Output params:      n/a                     
+/* ************************************************************************************************ */
+void Senha::TrocaSenha(String input, int index)
 {
   for (int y = 0; y < 4; y++) {
     int enderecoSenha = (index * 4) + 10 + y;
@@ -103,6 +119,12 @@ int Senha::TrocaSenha(String input, int index)
   EEPROM.write(index, 1);
 }
 
+/* ************************************************************************************************ */
+/* Method name:        RemoveSenha                     
+/* Method description: Remove senha de acordo com index
+/* Input params:       int index: lugar na memória que está salvo a senha                        
+/* Output params:      n/a                     
+/* ************************************************************************************************ */
 void Senha::RemoveSenha(int index)
 {
   int enderecoSenha = (index * 4) + 10;
@@ -112,6 +134,12 @@ void Senha::RemoveSenha(int index)
   }
 }
 
+/* ************************************************************************************************ */
+/* Method name:        ReturnIndexSenha                     
+/* Method description: Retorna o index do lugar da memória onde está salva a senha, caso ela exista
+/* Input params:       String input: senha digitada pelo usuário                       
+/* Output params:      int : retorna index da senha caso exista                     
+/* ************************************************************************************************ */
 int Senha::ReturnIndexSenha(String input)
 {
   String mensagem = "";
@@ -133,6 +161,12 @@ int Senha::ReturnIndexSenha(String input)
   return -1;
 }
 
+/* ************************************************************************************************ */
+/* Method name:        ReturnSenha                     
+/* Method description: Retorna senha de acordo com index enviado
+/* Input params:       int index: index da senha                      
+/* Output params:      String : retorna string da senha                     
+/* ************************************************************************************************ */
 String Senha::ReturnSenha(int index)
 {
   String mensagem = "";
@@ -150,6 +184,12 @@ String Senha::ReturnSenha(int index)
   return mensagem;
 }
 
+/* ************************************************************************************************ */
+/* Method name:        ComparaSenhaMestre                     
+/* Method description: Verifica se a senha enviada e a senha do admin
+/* Input params:       String input: recebe senhadigitada pelo usuário                      
+/* Output params:      bool : retorna true se a senha for correta, e false se incorreta                    
+/* ************************************************************************************************ */
 bool Senha::ComparaSenhaMestre(String input)
 {
   String mensagem = "";
@@ -168,8 +208,14 @@ bool Senha::ComparaSenhaMestre(String input)
   return false;
 }
 
-
-
+/* ************************************************************************************************ */
+/* Method name:        ComparanoRfid                     
+/* Method description: Verifica se foi aproximado um card (caso o valor seja o valor NoCard). Toda
+/* a vez que a função le card do rfid é chamada, ele pode retornar o valor do card (case ele seja aproximado)
+/* ou um valor vazio. Essa função verifica se o valor é vazio
+/* Input params:       byte * Card: recebe leitura de card                     
+/* Output params:      bool : retorna false se o valor do card for vazio, e true se for correto                    
+/* ************************************************************************************************ */
 bool Senha::ComparanoRfid(byte * Card)
 {
   bool compare = true;
@@ -183,6 +229,12 @@ bool Senha::ComparanoRfid(byte * Card)
   }
 }
 
+/* ************************************************************************************************ */
+/* Method name:        ComparaRfid                     
+/* Method description: Verifica se o card aproximado é um dos cards salvos no banco
+/* Input params:       byte * Card: recebe leitura de card                      
+/* Output params:      bool : retorna false se o valor do card for vazio, e true se for correto                   
+/* ************************************************************************************************ */
 bool Senha::ComparaRfid(byte * Card)
 {
   bool compare = true;
@@ -204,6 +256,12 @@ bool Senha::ComparaRfid(byte * Card)
   return false;
 }
 
+/* ************************************************************************************************ */
+/* Method name:        NovoCard                     
+/* Method description: Adiciona novo card no banco
+/* Input params:       byte * Card: recebe leitura de card                      
+/* Output params:      String : retorna mensagem de sucesso, ou de erro no cadastro                   
+/* ************************************************************************************************ */
 String Senha::NovoCard(byte * Card)
 {
   for (int i = 200; i < 210; i++) {
@@ -222,6 +280,13 @@ String Senha::NovoCard(byte * Card)
   return "memoria cheia";
 }
 
+
+/* ************************************************************************************************ */
+/* Method name:        RemoveCard                     
+/* Method description: Adiciona novo card no banco
+/* Input params:       int index: indica index do card a ser removido                      
+/* Output params:      n/a                  
+/* ************************************************************************************************ */
 void Senha::RemoveCard(int index)
 {
   int enderecoSenha = (index * 4) + 210;

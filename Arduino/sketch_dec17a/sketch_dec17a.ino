@@ -1,12 +1,27 @@
+/* ***************************************************** */
+/* File name:          sketch_dec17a               
+/* File description:   Main do projeto                        
+/* Author name:        Luiz Furlan                       
+/* Author name:        Lucas Pereira                     
+/* Author name:        Gabriel Murizine                  
+/* Creation date:      24Apr2020                         
+/* Revision date:      24Apr2020                         
+/* ***************************************************** */
+
 #include "maquina.h"
 
 Maquina *maq;
-
 Tranca *tranca1;    //Cria ponteiro para a tranca
 Teclado *teclado;   //Cria ponteiro para a tranca
 Lcd *lcd;           //Cria ponteiro para a tranca
 RFID *rfid;         //Cria ponteiro para a tranca
 
+/* ************************************************ */
+/* Method name:        setup                     
+/* Method description: Inicialização de todos os hardware 
+/* Input params:       n/a                          
+/* Output params:      n/a                         
+/* ************************************************ */
 void setup() {
   Serial.begin(9600);
   // declaracao de variaveis
@@ -22,6 +37,12 @@ void setup() {
   maq = new Maquina(tranca1, teclado, lcd, rfid);     //cria o objeto maquina de estados
 }
 
+/* ************************************************ */
+/* Method name:        loop                     
+/* Method description: Função de loop que chama as funções de acordo com estado 
+/* Input params:       n/a                          
+/* Output params:      n/a                         
+/* ************************************************ */
 void loop() {
   int est = maq->getEstado();
   switch (est) {
@@ -56,44 +77,3 @@ void loop() {
       break;
   }
 }
-//
-//#define ESPERA    1
-//#define CADASTRO  2
-//#define ESCOLHER  3
-//#define REMOVER   4
-//#define LECARTAO  5
-//#define ABRESENHA 6
-//#define NOVASENHA 7
-//#define TROCASENHA 8
-//#define MENUMESTRE 9
-//#define EDITASENHA 10
-
-//    void Espera();
-//    void Escolher();
-//    void LeCartao();
-//    void AbreSenha();
-//    void NovaSenha();
-
-//void setup() {
-//  tranca1 = new Tranca(portaTranca);                  //cria o objeto traca
-//  teclado = new Teclado(portaLinhas, portaColunas);   //cria o objeto teclado
-//  lcd = new Lcd(portaLcd);                            //cria o objeto lcd
-//  rfid = new RFID();                            //cria o objeto lcd
-//  Serial.begin(9600);
-//}
-//
-//
-//void loop() {
-//  letra = teclado->leTeclado();
-//  readC = rfid->LeTag();
-//  if(strncmp(&readC[0],&noCard[0], 4) != 0){
-//    letra = 'C';
-//  }
-//  int est = maq.getEstado();
-//  switch (Estado) {
-//    case ESPERA:
-//      maq.Espera();
-//    case ESCOLHER:
-//      maq.Escolher();
-//  }
-//}
