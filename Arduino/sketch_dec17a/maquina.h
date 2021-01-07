@@ -12,6 +12,7 @@
 #include "lcd.h"
 #include "rfid.h"
 #include "senha.h"
+#include "sensor_pir.h"
 
 //Estados
 #define ESPERA         1
@@ -40,6 +41,7 @@ class Maquina
     Lcd *lcd;           //Cria ponteiro para objeto do tipo lcd
     RFID *rfid;         //Cria ponteiro para objeto do tipo rfid
     Senha bancoSenha;
+    SensorPIR sensorPIR; ////Cria ponteiro para objeto do tipo sensorPIR
   public:  // metodos
     Maquina();        // metodo que coloca a maquina de estados no estado ESPERA
     Maquina(Tranca *tranca2, Teclado *teclado2, Lcd *lcd2, RFID *rfid2);
@@ -110,8 +112,13 @@ int Maquina::getEstado()
 void Maquina::Espera()
 {
   char letra;
+  int sensorPIRteste;
+
+  sensorPIRteste = sensorPIR->leSensorPIR();
+  Serial.println(sensorPIRteste);
   letra = teclado->leTeclado();
-  readC = rfid->LeTag();
+  // readC = rfid->LeTag();
+  
   if (bancoSenha.ComparanoRfid(readC)) {
     Estado = LECARTAO;
   }
