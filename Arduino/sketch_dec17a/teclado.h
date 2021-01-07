@@ -1,13 +1,13 @@
 /* ************************************************************************************************ */
-/* File name:          teclado.h
-  /* File description:   Arquivo com funções de controle do teclado
-  /* com senhas salvas
-  /* Author name:        Luiz Furlan
-  /* Author name:        Lucas Pereira
-  /* Author name:        Gabriel Murizine
-  /* Creation date:
-  /* Revision date:
-  /* ************************************************************************************************ */
+/* File name:          teclado.h               
+/* File description:   Arquivo com funções de controle do teclado                     
+/* com senhas salvas
+/* Author name:        Luiz Furlan                       
+/* Author name:        Lucas Pereira                     
+/* Author name:        Gabriel Murizine                  
+/* Creation date:                               
+/* Revision date:                               
+/* ************************************************************************************************ */
 #include <Keypad.h>
 
 byte nlinhas = 4; // n de linhas
@@ -30,11 +30,11 @@ class Teclado {
 };
 
 /* ************************************************************************************************ */
-/* Method name:        Teclado
-  /* Method description: Função para inicializar teclado
-  /* Input params:       byte *linha, byte *coluna : pinos onde estão ligados terminais do teclado
-  /* Output params:      n/a
-  /* ************************************************************************************************ */
+/* Method name:        Teclado                     
+/* Method description: Função para inicializar teclado
+/* Input params:       byte *linha, byte *coluna : pinos onde estão ligados terminais do teclado                      
+/* Output params:      n/a                         
+/* ************************************************************************************************ */
 Teclado::Teclado(byte *linha, byte *coluna)
 {
   linhas = linha;
@@ -44,30 +44,28 @@ Teclado::Teclado(byte *linha, byte *coluna)
 };
 
 /* ************************************************************************************************ */
-/* Method name:        leTeclado
-  /* Method description: retorna tecla que foi pressionada
-  /* Input params:       n/a
-  /* Output params:      retorna valor caso tecla seja pressionada, ou vazio
-  /* ************************************************************************************************ */
+/* Method name:        leTeclado                     
+/* Method description: retorna tecla que foi pressionada
+/* Input params:       n/a                     
+/* Output params:      n/a                         
+/* ************************************************************************************************ */
 char Teclado::leTeclado()
 {
-  // código usado para simular teclado via serial
-  char leitura_teclas = Serial.read();
-
-  //char leitura_teclas =teclado_personalizado->getKey(); // Atribui a variavel a leitura do teclado
+// código usado para simular teclado via serial
+//  char leitura_teclas = Serial.read();
+  
+  char leitura_teclas =teclado_personalizado->getKey(); // Atribui a variavel a leitura do teclado
   if (leitura_teclas) {                                  // Se alguma tecla foi pressionada
     Serial.println(leitura_teclas);
     return leitura_teclas;                               // retorna tecla pressionada
-  } else {
+  }
+  // código usado para simular teclado via serial
+  else {
+//  if (((leitura_teclas >= '0') && (leitura_teclas <= '9')  ) || ((leitura_teclas == 'A') || (leitura_teclas == 'B') || (leitura_teclas == 'C') || (leitura_teclas == 'D') || (leitura_teclas == '#'))) {
+//    Serial.println(leitura_teclas);
+//    return leitura_teclas; 
+//  }
+//  else {
     return ' ';                                          // se nao, retorna vazio.
   }
-  //  // código usado para simular teclado via serial
-  //  else
-  //  if (((leitura_teclas >= '0') && (leitura_teclas <= '9')  ) || ((leitura_teclas == 'A') || (leitura_teclas == 'B') || (leitura_teclas == 'C') || (leitura_teclas == 'D') || (leitura_teclas == '#'))) {
-  //    Serial.println(leitura_teclas);
-  //    return leitura_teclas;
-  //  }
-  //  else {
-  //    return ' ';                                          // se nao, retorna vazio.
-  //  }
 };
