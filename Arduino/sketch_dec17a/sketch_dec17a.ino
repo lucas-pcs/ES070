@@ -9,6 +9,7 @@
 /* ***************************************************** */
 
 #include "maquina.h"
+#include <avr/sleep.h>
 
 Maquina *maq;
 Tranca *tranca1;    //Cria ponteiro para a tranca
@@ -28,12 +29,14 @@ void setup() {
   // declaracao de variaveis
   int  portaTranca = A2; // pino ligado ao relé que libera a tranca, A2 = pino 16
   byte portaLinhas[4] = {A3, 8, 7, 6}; // linha do teclado
-  byte portaColunas[4] = {5, 4, 3, 2}; // coluna do teclaso
+  byte portaColunas[4] = {5, 4, 3, A1}; // coluna do teclaso
   byte portaLcd = 0x27; // endereço do módulo i2c
-  int portaSensorPIR = A1; // pino em que quando o sensor de presença detecta alguém envia sinal HIGH
+  int portaSensorPIR = 2; // pino em que quando o sensor de presença detecta alguém envia sinal HIGH
+  int tx = 0;
+  int rx = 1;
 
   tranca1 = new Tranca(portaTranca);                  //cria o objeto traca
-  teclado = new Teclado(portaLinhas, portaColunas);   //cria o objeto teclado
+  teclado = new Teclado(portaLinhas, portaColunas, tx, rx);   //cria o objeto teclado
   lcd = new Lcd(portaLcd);                            //cria o objeto lcd
   rfid = new RFID();                                  //cria o objeto rfid
   sensorpir = new SensorPIR(portaSensorPIR);          //cria o objeto do sensor de presenca
@@ -48,6 +51,11 @@ void setup() {
 /* Output params:      n/a                         
 /* ************************************************ */
 void loop() {
+  int sensorPIRteste;
+  sensorPIRteste = sensorpir->leSensorPIR();
+  if(sensorPIRteste == HIGH){
+    modoOcioso();
+  }
   int est = maq->getEstado();
   switch (est) {
     case ESPERA:
@@ -80,4 +88,17 @@ void loop() {
     default:
       break;
   }
+}
+
+void modoOcioso(){
+    set_sleep_mode(SLEEP_MODE_IDLE);
+    sleep_enable();
+    int interrupcao = sensorpir->returnPorta();
+    attachInterrupt(digitalPinToInterrupt(interrupcao), acordar, CHANGE);
+    sleep_cpu();
+}
+
+void acordar(){
+    sleep_disable();   // Desabilita o sleep
+    detachInterrupt(0);// Desabilita a interrupção
 }

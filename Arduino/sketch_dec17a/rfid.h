@@ -1,12 +1,12 @@
 /* ************************************************************************************************ */
-/* File name:          rfid.h               
-/* File description:   Arquivo com funções de controle do rfid                     
-/* Author name:        Luiz Furlan                       
-/* Author name:        Lucas Pereira                     
-/* Author name:        Gabriel Murizine                  
-/* Creation date:                               
-/* Revision date:                               
-/* ************************************************************************************************ */
+/* File name:          rfid.h
+  /* File description:   Arquivo com funções de controle do rfid
+  /* Author name:        Luiz Furlan
+  /* Author name:        Lucas Pereira
+  /* Author name:        Gabriel Murizine
+  /* Creation date:
+  /* Revision date:
+  /* ************************************************************************************************ */
 #include <SPI.h>
 #include <MFRC522.h>
 
@@ -20,15 +20,15 @@ class RFID
   public:
     RFID();
     byte* LeTag();
-    
+
 };
 
 /* ************************************************************************************************ */
-/* Method name:        RFID                     
-/* Method description: Inicializa leitor rfid
-/* Input params:       n/a                         
-/* Output params:      n/a                         
-/* ************************************************************************************************ */
+/* Method name:        RFID
+  /* Method description: Inicializa leitor rfid
+  /* Input params:       n/a
+  /* Output params:      n/a
+  /* ************************************************************************************************ */
 RFID::RFID() {
   SPI.begin();      // Inicia  SPI bus
   mfrc522.PCD_Init();   // Inicia o módulo MFRC522 RFID
@@ -36,10 +36,10 @@ RFID::RFID() {
 };
 
 /* ************************************************************************************************ */
-/* Method name:        LeTag                     
+/* Method name:        LeTag
 /* Method description: Função que le tag que foi aproximada
-/* Input params:       Byte* : retorna vertor com tag lida                         
-/* Output params:      n/a                         
+/* Input params:       Byte* : retorna vertor com tag lida
+/* Output params:      n/a
 /* ************************************************************************************************ */
 byte* RFID::LeTag() {
   if (mfrc522.PICC_IsNewCardPresent()) {
@@ -48,8 +48,7 @@ byte* RFID::LeTag() {
         readCard[i] = mfrc522.uid.uidByte[i]; // Lê o cartão RFID
       }
       return readCard;
-    } else {
-      return noCard;
     }
   }
+  return noCard;
 };

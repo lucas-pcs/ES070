@@ -113,12 +113,6 @@ int Maquina::getEstado()
 void Maquina::Espera()
 {
   char letra;
-  int sensorPIRteste;
-
-  sensorPIRteste = sensorpir->leSensorPIR();
-  if(sensorPIRteste == HIGH){
-    Serial.println("sensor de movimento ativado");
-  }
   letra = teclado->leTeclado();
   // readC = rfid->LeTag();
   

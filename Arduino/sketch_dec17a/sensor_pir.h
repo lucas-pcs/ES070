@@ -8,7 +8,6 @@
 /* Creation date:                               
 /* Revision date:                               
 /* ************************************************************************************************ */
-
 class SensorPIR
 {
     // variaveis
@@ -19,6 +18,7 @@ class SensorPIR
   public:
     SensorPIR(int iPorta);
     int leSensorPIR();
+    int returnPorta();
 };
 
 /* ************************************************************************************************ */
@@ -31,9 +31,14 @@ SensorPIR::SensorPIR(int iPorta)
 {
   _iPorta = iPorta;
   _iDetectaPresenca = 0;
-  pinMode(_iPorta, INPUT);   //Define a porta como saída
+  pinMode(iPorta, INPUT_PULLUP);
+  //pinMode(_iPorta, INPUT);   //Define a porta como saída
   Serial.print("O sensor de presença foi inicializado na porta: ");
   Serial.println(_iPorta);
+}
+int SensorPIR::returnPorta()
+{
+  return _iPorta;
 }
 
 /* ************************************************************************************************ */
