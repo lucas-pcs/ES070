@@ -1,12 +1,3 @@
-/* ************************************************************************************************ */
-/* File name:          maquina.h               
-/* File description:   Arquivo com funções da máquina de estado                       
-/* Author name:        Luiz Furlan                       
-/* Author name:        Lucas Pereira                     
-/* Author name:        Gabriel Murizine                  
-/* Creation date:                               
-/* Revision date:                               
-/* ************************************************************************************************ */
 #include "teclado.h"
 #include "tranca.h"
 #include "lcd.h"
@@ -60,15 +51,6 @@ class Maquina
     void CadastraCard();
 };
 
-/* ************************************************************************************************ */
-/* Method name:        Maquina                     
-/* Method description: Construtor do objeto máquina de estados
-/* Input params:       Tranca *tranca2: recebe ponteiro que aponta para objeto que controla Tranca, 
-/* Teclado *teclado2: recebe ponteiro que aponta para objeto que controla o teclado, Lcd *lcd2: recebe 
-/* ponteiro que aponta para objeto que controla LCD, RFID *rfid2: recebe ponteiro que aponta para objeto 
-/* que controla RFID                      
-/* Output params:      n/a                         
-/* ************************************************************************************************ */
 Maquina::Maquina(Tranca *tranca2, Teclado *teclado2, Lcd *lcd2, RFID *rfid2, SensorPIR *sensorpir1)
 {
   senInput = "";
@@ -82,36 +64,19 @@ Maquina::Maquina(Tranca *tranca2, Teclado *teclado2, Lcd *lcd2, RFID *rfid2, Sen
   Serial.println("MAQUINA metodo 2");
 };
 
-/* ************************************************************************************************ */
-/* Method name:        setEstado                     
-/* Method description: Função para setar variavel Estado
-/* Input params:       int estado: Estado que sera definido                         
-/* Output params:      n/a                         
-/* ************************************************************************************************ */
 void Maquina::setEstado(int estado)
 {
   Estado = estado;
 };
 
-/* ************************************************************************************************ */
-/* Method name:        getEstado                     
-/* Method description: Função que retorna valor do estado atual da máquina
-/* Input params:       n/a                          
-/* Output params:      Int Estado: retorna valor do estado atual                        
-/* ************************************************************************************************ */
 int Maquina::getEstado()
 {
   return Estado;
 };
 
-/* ************************************************************************************************ */
-/* Method name:        Espera                     
-/* Method description: Função do estado que aguarda usuário digitar a senha
-/* Input params:       n/a                          
-/* Output params:      n/a                        
-/* ************************************************************************************************ */
 void Maquina::Espera()
 {
+  Serial.println("ESTADO: Espera");
   char letra;
   letra = teclado->leTeclado();
   // readC = rfid->LeTag();
@@ -130,14 +95,9 @@ void Maquina::Espera()
   }
 };
 
-/* ************************************************************************************************ */
-/* Method name:        LeCartao                     
-/* Method description: Função que le cartão e compara com cards salvos no banco
-/* Input params:       n/a                          
-/* Output params:      n/a                        
-/* ************************************************************************************************ */
 void Maquina::LeCartao()
 {
+  Serial.println("ESTADO: LeCartao");
   if (bancoSenha.ComparaRfid(readC)) {
     lcd->escreveSenha("Card", "Correto");
     tranca1->AbreeFecha();
@@ -147,30 +107,26 @@ void Maquina::LeCartao()
   goToEspera();
 };
 
-/* ************************************************************************************************ */
-/* Method name:        Escolher                     
-/* Method description: Estado que espera input do usuário apos digitar a senha
-/* Input params:       n/a                          
-/* Output params:      n/a                        
-/* ************************************************************************************************ */
 void Maquina::Escolher()
 {
+  Serial.println("ESTADO: Escolher");
   char letra;
   countTeclado = 0;
   letra = teclado->leTeclado();
+  if (letra != ' '){
   switch (letra) {
     case 'A':
       Estado = ABRESENHA;
       break;
-    case 'B':
+     case 'B':
       if (bancoSenha.ComparaSenha(senInput)) {
-        Serial.println ("comparado");
         indexSenha = bancoSenha.ReturnIndexSenha(senInput);
-        Serial.println ("index");
         if (indexSenha == -1) {
           lcd->escreveSenha("Erro index", "");
           goToEspera();
         } else {
+          countTeclado = 0;
+          senInput = "";
           Estado = TROCASENHA;
         }
       } else {
@@ -193,27 +149,25 @@ void Maquina::Escolher()
       goToEspera();
       break;
     default:
+    Serial.print("ESCOLHER FOI PRO DEFAULT e a letra escolhida é: ");
+    Serial.println(letra);
       break;
+  }
   }
 };
 
-/* ************************************************************************************************ */
-/* Method name:        MenuMestre                     
-/* Method description: Menu de escolha após digitar a senha mestre, permite a troca da senha mestre
-/* cadastro de card e acesso ao menu de edição das senhas.
-/* Input params:       n/a                          
-/* Output params:      n/a                        
-/* ************************************************************************************************ */
 void Maquina::MenuMestre()
 {
-  char letra;
-  letra = teclado->leTeclado();
+  Serial.println("ESTADO: MenuMestre");
+  char letra = teclado->leTeclado();
+  countTeclado = 0;
+  senInput = "";
   switch (letra) {
-    case 'A':
+    case 'A': // Troca senha mestra
       indexSenha = 25;
       Estado = TROCASENHA;
       break;
-    case 'B'://Editar senha
+    case 'D'://Editar qualquer senha
       indexSenha = 0;
       Estado = EDITASENHA;
       break;
@@ -224,22 +178,16 @@ void Maquina::MenuMestre()
     case '#':
       goToEspera();
       break;
-    case 'D':
+    case 'B':
       break;
     default:
       break;
   }
 };
 
-/* ************************************************************************************************ */
-/* Method name:        EditaSenha                     
-/* Method description: Menu de edição das senhas, permite a edição da senhas salvas remoção das 
-/* senhas e a troca das senhas
-/* Input params:       n/a                          
-/* Output params:      n/a                        
-/* ************************************************************************************************ */
 void Maquina::EditaSenha()
 {
+  Serial.println("ESTADO: EditaSenha");
   char letra;
   countTeclado = 0;
   lcd->escreveSenha(String(indexSenha), bancoSenha.ReturnSenha(indexSenha));
@@ -247,6 +195,8 @@ void Maquina::EditaSenha()
   switch (letra) {
     case 'A':
       Estado = TROCASENHA;
+      countTeclado = 0;
+      senInput = "";
       Serial.print(indexSenha);
       break;
     case 'B'://Editar senha
@@ -272,13 +222,8 @@ void Maquina::EditaSenha()
   }
 };
 
-/* ************************************************************************************************ */
-/* Method name:        AbreSenha                     
-/* Method description: Verifica se a senha está correta, case esteja, abre a tranca
-/* Input params:       n/a                          
-/* Output params:      n/a                        
-/* ************************************************************************************************ */
 void Maquina::AbreSenha() {
+  Serial.println("ESTADO: AbreSenha");
   if (bancoSenha.ComparaSenha(senInput)) {
     lcd->escreveSenha("Senha", "Correto");
     tranca1->AbreeFecha();
@@ -288,13 +233,8 @@ void Maquina::AbreSenha() {
   goToEspera();
 };
 
-/* ************************************************************************************************ */
-/* Method name:        NovaSenha                     
-/* Method description: Recebe input da nova senha a ser cadastrada
-/* Input params:       n/a                          
-/* Output params:      n/a                        
-/* ************************************************************************************************ */
 void Maquina::NovaSenha() {
+  Serial.println("ESTADO: NovaSenha");
   char letra;
   letra = teclado->leTeclado();
   readC = rfid->LeTag();
@@ -309,25 +249,17 @@ void Maquina::NovaSenha() {
   }
   if (countTeclado == 4) {
     String retorno = bancoSenha.NovaSenha(senInput);
-    lcd->escreveSenha(retorno, "");
+    lcd->escreveSenha(retorno," ");
     goToEspera();
   }
 };
 
-/* ************************************************************************************************ */
-/* Method name:        TrocaSenha                     
-/* Method description: Recebe input da nova senha a ser cadastrada, e realiza a troca com senha antiga
-/* Input params:       n/a                          
-/* Output params:      n/a                        
-/* ************************************************************************************************ */
 void Maquina::TrocaSenha() {
+  Serial.println("ESTADO: TrocaSenha");
   char letra;
   letra = teclado->leTeclado();
-   lcd->escreveSenha("Digite a Senha", senInput);
-  countTeclado = 0;
-  senInput = "";
-  if (letra != ' ') {
-    lcd->escreveSenha("Digite a Senha", senInput);
+  lcd->escreveSenha("Digite a Senha", senInput);
+  if (((letra >= '0') && (letra <= '9')  ) || ((letra == 'A') || (letra == 'B') || (letra == 'C') || (letra == 'D') || (letra == '#'))) {
     Serial.print(letra);
     senInput += letra;
     lcd->escreveSenha("senha", senInput);
@@ -341,25 +273,15 @@ void Maquina::TrocaSenha() {
   }
 };
 
-/* ************************************************************************************************ */
-/* Method name:        Remove                     
-/* Method description: Remove senha do banco
-/* Input params:       n/a                          
-/* Output params:      n/a                        
-/* ************************************************************************************************ */
 void Maquina::Remove() {
+  Serial.println("ESTADO: Remove");
   bancoSenha.RemoveSenha(indexSenha);
   lcd->escreveSenha("Senha removida", "");
   goToEspera();
 };
 
-/* ************************************************************************************************ */
-/* Method name:        CadastraCard                     
-/* Method description: Cadastra card rfid no banco
-/* Input params:       n/a                          
-/* Output params:      n/a                        
-/* ************************************************************************************************ */
 void Maquina::CadastraCard() {
+  Serial.println("ESTADO: CadastraCard");
   readC = rfid->LeTag();
   if (bancoSenha.ComparanoRfid(readC)) {
     bancoSenha.NovoCard(readC);
@@ -367,13 +289,8 @@ void Maquina::CadastraCard() {
   }
 };
 
-/* ************************************************************************************************ */
-/* Method name:        goToEspera                     
-/* Method description: função que limpa variaveis de senha e imput e seta estado como espera
-/* Input params:       n/a                          
-/* Output params:      n/a                        
-/* ************************************************************************************************ */
 void Maquina::goToEspera() {
+  Serial.println("ESTADO: goToEspera");
   countTeclado = 0;
   senInput = "";
   Estado = ESPERA;
