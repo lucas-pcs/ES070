@@ -25,7 +25,7 @@ SensorPIR *sensorpir;
 /* Output params:      n/a                         
 /* ************************************************ */
 void setup() {
-  //Serial.begin(9600);
+  Serial.begin(9600);
   // declaracao de variaveis
   int  portaTranca = A2; // pino ligado ao relé que libera a tranca, A2 = pino 16
   byte portaLinhas[4] = {A3, 8, 7, 6}; // linha do teclado

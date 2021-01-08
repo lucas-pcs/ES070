@@ -9,7 +9,7 @@
   /* Revision date:
   /* ************************************************************************************************ */
 #include <Keypad.h>
-#include <SoftwareSerial.h>
+//#include <SoftwareSerial.h>
 
 byte nlinhas = 4; // n de linhas
 byte ncolunas = 4; //n de colunas
@@ -27,7 +27,7 @@ class Teclado {
     Keypad *teclado_personalizado;
     //SoftwareSerial *serial;
   public:
-    SoftwareSerial *serial;
+    //SoftwareSerial *serial;
     Teclado(byte *linha, byte *coluna, int tx, int rx);
     char leTeclado();
 };
@@ -43,8 +43,8 @@ Teclado::Teclado(byte *linha, byte *coluna, int tx, int rx)
   linhas = linha;
   colunas = coluna;
   teclado_personalizado = new Keypad(makeKeymap(dicionarioTeclado), linha, coluna, nlinhas, ncolunas);
-  serial = new SoftwareSerial(tx, rx);
-  serial-> begin(9600);
+  //serial = new SoftwareSerial(tx, rx);
+  //serial-> begin(9600);
   Serial.println("Teclado INICIALIZADO");
 };
 
@@ -56,14 +56,14 @@ Teclado::Teclado(byte *linha, byte *coluna, int tx, int rx)
   /* ************************************************************************************************ */
 char Teclado::leTeclado()
 {
-  char leitura_teclas = teclado_personalizado->getKey(); // Atribui a variavel a leitura do teclado
-  if (leitura_teclas) {                                  // Se alguma tecla foi pressionada
-    Serial.println(leitura_teclas);
-    return leitura_teclas;                               // retorna tecla pressionada
-  }
+//  char leitura_teclas = teclado_personalizado->getKey(); // Atribui a variavel a leitura do teclado
+//  if (leitura_teclas) {                                  // Se alguma tecla foi pressionada
+//    Serial.println(leitura_teclas);
+//    return leitura_teclas;                               // retorna tecla pressionada
+//  }
   // código usado para simular teclado via serial
+  char leitura_teclas = Serial.read();
   if (((leitura_teclas >= '0') && (leitura_teclas <= '9')  ) || ((leitura_teclas == 'A') || (leitura_teclas == 'B') || (leitura_teclas == 'C') || (leitura_teclas == 'D') || (leitura_teclas == '#'))) {
-    leitura_teclas = serial->read();
     Serial.println(leitura_teclas);
     return leitura_teclas;
   }
