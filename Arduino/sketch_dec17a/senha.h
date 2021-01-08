@@ -49,10 +49,10 @@ Senha::Senha()
   //Ultilizar para cadastrar as senhas iniciais
 
     //   LIMPA VETOR E CRIA SENHA INICIAL
-  //  for (int i = 0; i < 255; i++) {
-  //    Serial.print (EEPROM.read(i));
-  //    EEPROM.write(i, 0);
-  //  }
+    for (int i = 0; i < 255; i++) {
+      Serial.print (EEPROM.read(i));
+      EEPROM.write(i, 0);
+    }
     NovaSenha("1234");
     NovaSenha("1235");
     String input = "1212";

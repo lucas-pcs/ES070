@@ -163,9 +163,10 @@ void Maquina::Escolher()
       Estado = ABRESENHA;
       break;
     case 'B':
-      senInput = "";
       if (bancoSenha.ComparaSenha(senInput)) {
+        Serial.println ("comparado");
         indexSenha = bancoSenha.ReturnIndexSenha(senInput);
+        Serial.println ("index");
         if (indexSenha == -1) {
           lcd->escreveSenha("Erro index", "");
           goToEspera();
@@ -206,13 +207,11 @@ void Maquina::Escolher()
 void Maquina::MenuMestre()
 {
   char letra;
-  countTeclado = 0;
   letra = teclado->leTeclado();
   switch (letra) {
     case 'A':
       indexSenha = 25;
       Estado = TROCASENHA;
-      senInput = "";
       break;
     case 'B'://Editar senha
       indexSenha = 0;
@@ -248,8 +247,6 @@ void Maquina::EditaSenha()
   switch (letra) {
     case 'A':
       Estado = TROCASENHA;
-      countTeclado = 0;
-      senInput = "";
       Serial.print(indexSenha);
       break;
     case 'B'://Editar senha
@@ -326,6 +323,8 @@ void Maquina::NovaSenha() {
 void Maquina::TrocaSenha() {
   char letra;
   letra = teclado->leTeclado();
+  countTeclado = 0;
+  senInput = "";
   if (letra != ' ') {
     lcd->escreveSenha("Digite a Senha", senInput);
     Serial.print(letra);
