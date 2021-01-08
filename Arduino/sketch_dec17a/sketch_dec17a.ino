@@ -35,7 +35,7 @@ void loop() {
   if(sensorPIRteste == HIGH){
     modoOcioso();
   }
-  int est = maq->getEstado();
+ int est = maq->getEstado();
   switch (est) {
     case ESPERA:
       maq->Espera();
@@ -63,6 +63,9 @@ void loop() {
       break;
     case REMOVER:
       maq->Remove();
+      break;
+    case CADASTRACARD:
+      maq->CadastraCard();
       break;
     default:
       break;

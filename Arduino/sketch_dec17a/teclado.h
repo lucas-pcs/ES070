@@ -40,10 +40,10 @@ char Teclado::leTeclado()
     return leitura_teclas;                               // retorna tecla pressionada
   }
 // código usado para simular teclado via serial
-//  leitura_teclas = Serial.read();
-//  if (((leitura_teclas >= '0') && (leitura_teclas <= '9')  ) || ((leitura_teclas == 'A') || (leitura_teclas == 'B') || (leitura_teclas == 'C') || (leitura_teclas == 'D') || (leitura_teclas == '#'))) {
-//    Serial.println(leitura_teclas);
-//    return leitura_teclas;
-//  }
+  leitura_teclas = Serial.read();
+  if (((leitura_teclas >= '0') && (leitura_teclas <= '9')  ) || ((leitura_teclas == 'A') || (leitura_teclas == 'B') || (leitura_teclas == 'C') || (leitura_teclas == 'D') || (leitura_teclas == '#'))) {
+    Serial.println(leitura_teclas);
+    return leitura_teclas;
+  }
   return ' ';                                          // se nao, retorna vazio.
 };

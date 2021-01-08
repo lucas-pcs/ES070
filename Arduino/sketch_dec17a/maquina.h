@@ -79,8 +79,7 @@ void Maquina::Espera()
   Serial.println("ESTADO: Espera");
   char letra;
   letra = teclado->leTeclado();
-  // readC = rfid->LeTag();
-  
+  readC = rfid->LeTag();
   if (bancoSenha.ComparanoRfid(readC)) {
     Estado = LECARTAO;
   }
