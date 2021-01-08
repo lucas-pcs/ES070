@@ -8,7 +8,6 @@
 /* Creation date:                               
 /* Revision date:                               
 /* ************************************************************************************************ */
-
 class SensorPIR
 {
     // variaveis
@@ -37,6 +36,7 @@ SensorPIR::SensorPIR(int iPorta)
   Serial.print("O sensor de presença foi inicializado na porta: ");
   Serial.println(_iPorta);
 }
+
 int SensorPIR::returnPorta()
 {
   return _iPorta;

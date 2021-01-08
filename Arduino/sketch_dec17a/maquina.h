@@ -7,7 +7,6 @@
 /* Creation date:                               
 /* Revision date:                               
 /* ************************************************************************************************ */
-
 #include "teclado.h"
 #include "tranca.h"
 #include "lcd.h"
@@ -123,7 +122,7 @@ void Maquina::Espera()
   //retorna diferente de  null se uma tecla foi pressionada
   if (letra != ' ') {
     senInput += letra;
-    lcd->escreveSenha("senha", senInput);
+    lcd->escreveSenha("Senha", senInput);
     countTeclado ++;
   }
   if (countTeclado == 4) {
@@ -143,8 +142,12 @@ void Maquina::LeCartao()
   if (bancoSenha.ComparaRfid(readC)) {
     lcd->escreveSenha("Card", "Correto");
     tranca1->AbreeFecha();
+    delay(2000);
+    lcd->limpaTela();
   } else {
     lcd->escreveSenha("Card", "Incorreto");
+    delay(2000);
+    lcd->limpaTela();
   }
   goToEspera();
 };
@@ -171,6 +174,8 @@ void Maquina::Escolher()
         indexSenha = bancoSenha.ReturnIndexSenha(senInput);
         if (indexSenha == -1) {
           lcd->escreveSenha("Erro index", "");
+          delay(2000);
+          lcd->limpaTela();
           goToEspera();
         } else {
           countTeclado = 0;
@@ -179,6 +184,8 @@ void Maquina::Escolher()
         }
       } else {
         lcd->escreveSenha("Senha", "Incorreta");
+        delay(2000);
+        lcd->limpaTela();
         goToEspera();
       }
       break;
@@ -186,7 +193,9 @@ void Maquina::Escolher()
       if (bancoSenha.ComparaSenhaMestre(senInput)) {
         Estado = MENUMESTRE;
       } else {
-        lcd->escreveSenha("Senha Mestre", "Incorreta");
+        lcd->escreveSenha("Senha Mestra", "Incorreta");
+        delay(2000);
+        lcd->limpaTela();
         goToEspera();
       }
       Serial.print ("mestre");
@@ -194,6 +203,7 @@ void Maquina::Escolher()
       senInput = "";
       break;
     case '#':
+      lcd->limpaTela();
       goToEspera();
       break;
     default:
@@ -213,6 +223,7 @@ void Maquina::Escolher()
 /* ************************************************************************************************ */
 void Maquina::MenuMestre()
 {
+  lcd->escreveSenha("Menu Mestre", senInput);
   Serial.println("ESTADO: MenuMestre");
   char letra = teclado->leTeclado();
   countTeclado = 0;
@@ -222,7 +233,7 @@ void Maquina::MenuMestre()
       indexSenha = 25;
       Estado = TROCASENHA;
       break;
-    case 'D'://Editar qualquer senha
+    case 'B'://Editar qualquer senha
       indexSenha = 0;
       Estado = EDITASENHA;
       break;
@@ -230,10 +241,11 @@ void Maquina::MenuMestre()
       indexSenha = 0;
       Estado = CADASTRACARD;
       break;
-    case '#':
-      goToEspera();
+    case 'D':
       break;
-    case 'B':
+    case '#':
+      lcd->limpaTela();
+      goToEspera();
       break;
     default:
       break;
@@ -249,10 +261,12 @@ void Maquina::MenuMestre()
 /* ************************************************************************************************ */
 void Maquina::EditaSenha()
 {
+  lcd->limpaTela();
+  lcd->escreveSenha("Editar Senha: " + String(indexSenha), bancoSenha.ReturnSenha(indexSenha));
   Serial.println("ESTADO: EditaSenha");
   char letra;
   countTeclado = 0;
-  lcd->escreveSenha(String(indexSenha), bancoSenha.ReturnSenha(indexSenha));
+  //lcd->escreveSenha(String(indexSenha), bancoSenha.ReturnSenha(indexSenha));
   letra = teclado->leTeclado();
   switch (letra) {
     case 'A':
@@ -277,6 +291,7 @@ void Maquina::EditaSenha()
       }
       break;
     case '#':
+      lcd->limpaTela();
       goToEspera();
       break;
     default:
@@ -295,8 +310,12 @@ void Maquina::AbreSenha() {
   if (bancoSenha.ComparaSenha(senInput)) {
     lcd->escreveSenha("Senha", "Correto");
     tranca1->AbreeFecha();
+    delay(2000);
+    lcd->limpaTela();
   } else {
     lcd->escreveSenha("Senha", "Incorreta");
+    delay(2000);
+    lcd->limpaTela();
   }
   goToEspera();
 };
@@ -324,6 +343,8 @@ void Maquina::NovaSenha() {
   if (countTeclado == 4) {
     String retorno = bancoSenha.NovaSenha(senInput);
     lcd->escreveSenha(retorno," ");
+    delay(2000);
+    lcd->limpaTela();
     goToEspera();
   }
 };
@@ -338,7 +359,7 @@ void Maquina::TrocaSenha() {
   Serial.println("ESTADO: TrocaSenha");
   char letra;
   letra = teclado->leTeclado();
-  lcd->escreveSenha("Digite a Senha", senInput);
+  lcd->escreveSenha("Nova Senha:", senInput);
   if (((letra >= '0') && (letra <= '9')  ) || ((letra == 'A') || (letra == 'B') || (letra == 'C') || (letra == 'D') || (letra == '#'))) {
     Serial.print(letra);
     senInput += letra;
@@ -348,7 +369,9 @@ void Maquina::TrocaSenha() {
   if (countTeclado == 4) {
     Serial.print(indexSenha);
     bancoSenha.TrocaSenha(senInput, indexSenha);
-    lcd->escreveSenha("Senha salva", "");
+    lcd->escreveSenha("A nova senha", "foi salva.");
+    delay(2000);
+    lcd->limpaTela();
     goToEspera();
   }
 };
@@ -363,6 +386,8 @@ void Maquina::Remove() {
   Serial.println("ESTADO: Remove");
   bancoSenha.RemoveSenha(indexSenha);
   lcd->escreveSenha("Senha removida", "");
+  delay(2000);
+  lcd->limpaTela();
   goToEspera();
 };
 
@@ -373,11 +398,15 @@ void Maquina::Remove() {
 /* Output params:      n/a                        
 /* ************************************************************************************************ */
 void Maquina::CadastraCard() {
+  lcd->escreveSenha("Aproxime o RFID", "para o cadastro");
   Serial.println("ESTADO: CadastraCard");
   readC = rfid->LeTag();
   if (bancoSenha.ComparanoRfid(readC)) {
     bancoSenha.NovoCard(readC);
     goToEspera();
+    lcd->escreveSenha("RFID cadastrado", "com sucesso");
+    delay(2000);
+    lcd->limpaTela();
   }
 };
 

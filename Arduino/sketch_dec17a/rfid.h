@@ -7,7 +7,6 @@
 /* Creation date:
 /* Revision date:
 /* ************************************************************************************************ */
-
 #include <SPI.h>
 #include <MFRC522.h>
 
@@ -36,12 +35,6 @@ RFID::RFID() {
   Serial.println("mfrc522 INICIALIZADO");
 };
 
-/* ************************************************************************************************ */
-/* Method name:        LeTag
-/* Method description: Função que le tag que foi aproximada
-/* Input params:       Byte* : retorna vertor com tag lida
-/* Output params:      n/a
-/* ************************************************************************************************ */
 byte* RFID::LeTag() {
   if (mfrc522.PICC_IsNewCardPresent()) {
     if ( mfrc522.PICC_ReadCardSerial()) {

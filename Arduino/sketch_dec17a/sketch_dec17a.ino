@@ -4,28 +4,28 @@
 /* Author name:        Luiz Furlan                       
 /* Author name:        Lucas Pereira                     
 /* Author name:        Gabriel Murizine                  
-/* Creation date:      24Apr2020                         
-/* Revision date:      24Apr2020                         
+/* Creation date:                               
+/* Revision date:                              
 /* ***************************************************** */
-
 #include "maquina.h"
 #include <avr/sleep.h>
 
-Maquina *maq;
-Tranca *tranca1;    //Cria ponteiro para a tranca
-Teclado *teclado;   //Cria ponteiro para a tranca
-Lcd *lcd;           //Cria ponteiro para a tranca
-RFID *rfid;         //Cria ponteiro para a tranca
-SensorPIR *sensorpir;
+// Criação dos ponteiros.
+Maquina *maq;           //Cria ponteiro para a máquina de estados
+Tranca *tranca1;        //Cria ponteiro para a tranca
+Teclado *teclado;       //Cria ponteiro para o teclado
+Lcd *lcd;               //Cria ponteiro para o lcd
+RFID *rfid;             //Cria ponteiro para o RFID
+SensorPIR *sensorpir;   //Cria ponteiro para o sensor de presença
 
-// declaracao de variaveis
-int  portaTranca = A2; // pino ligado ao relé que libera a tranca, A2 = pino 16
-byte portaLinhas[4] = {A3, 8, 7, 6}; // linha do teclado
-byte portaColunas[4] = {5, 4, 3, A1}; // coluna do teclado0
-byte portaLcd = 0x27; // endereço do módulo i2c
-int portaSensorPIR = 2; // pino em que quando o sensor de presença detecta alguém envia sinal HIGH
-int tx = 1;
-int rx = 0;
+// Declaracao das variáveis globais.
+int  portaTranca = A3;                // Pino ligado ao relé responsável por abrir a tranca.
+byte portaLinhas[4] = {A1, 3, 4, 5};  // Linhas do teclado.
+byte portaColunas[4] = {6, 7, 8, A2}; // Colunas do teclado.
+byte portaLcd = 0x27;                 // Endereço do módulo I2C
+int portaSensorPIR = 2;               // Pino em que quando o sensor de presença detecta alguém envia sinal HIGH
+int tx = 1;                           // Porta TX
+int rx = 0;                           // Porta RX
 
 /* ************************************************ */
 /* Method name:        setup                     
@@ -34,15 +34,13 @@ int rx = 0;
 /* Output params:      n/a                         
 /* ************************************************ */
 void setup() {
-  Serial.begin(9600);
-
-  tranca1 = new Tranca(portaTranca);                  //cria o objeto traca
-  teclado = new Teclado(portaLinhas, portaColunas, tx, rx);   //cria o objeto teclado
-  lcd = new Lcd(portaLcd);                            //cria o objeto lcd
-  rfid = new RFID();                                  //cria o objeto rfid
-  sensorpir = new SensorPIR(portaSensorPIR);          //cria o objeto do sensor de presenca
-  maq = new Maquina(tranca1, teclado, lcd, rfid, sensorpir);     //cria o objeto maquina de estados
-
+  Serial.begin(9600);                                         // Inicializa a saída serial, utilizada no processo de desenvolvimento
+  tranca1 = new Tranca(portaTranca);                          // Cria o objeto tranca
+  teclado = new Teclado(portaLinhas, portaColunas, tx, rx);   // Cria o objeto teclado
+  lcd = new Lcd(portaLcd);                                    // Cria o objeto lcd
+  rfid = new RFID();                                          // Cria o objeto RFID
+  sensorpir = new SensorPIR(portaSensorPIR);                  // Cria o objeto do sensor de presença
+  maq = new Maquina(tranca1, teclado, lcd, rfid, sensorpir);  // Cria o objeto máquina de estados
 }
 
 /* ************************************************ */
@@ -52,9 +50,9 @@ void setup() {
 /* Output params:      n/a                         
 /* ************************************************ */
 void loop() {
-  int sensorPIRteste;
-  sensorPIRteste = sensorpir->leSensorPIR();
-  if(sensorPIRteste == HIGH){
+  int iSensorPIR;                           // Variavél que indica a presença de alguém
+  iSensorPIR = sensorpir->leSensorPIR();    // Leitura do sensor
+  if(iSensorPIR == HIGH){
     modoOcioso();
   }
  int est = maq->getEstado();

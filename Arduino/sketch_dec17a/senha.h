@@ -8,7 +8,6 @@
 /* Creation date:                               
 /* Revision date:                               
 /* ************************************************************************************************ */
-
 #include <EEPROM.h>
 #include <string.h>
 
@@ -54,9 +53,9 @@ Senha::Senha()
       Serial.print (EEPROM.read(i));
       EEPROM.write(i, 0);
     }
-    NovaSenha("1234");
-    NovaSenha("1235");
-    String input = "1212";
+    //NovaSenha("1234");
+    //NovaSenha("1235");
+    String input = "9999";
     int enderecoSenha = 110;
     for (int y = 0; y < 4; y++) {
       EEPROM.write(enderecoSenha + y, input[y]);
