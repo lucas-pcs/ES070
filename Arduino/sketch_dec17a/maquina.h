@@ -323,6 +323,7 @@ void Maquina::NovaSenha() {
 void Maquina::TrocaSenha() {
   char letra;
   letra = teclado->leTeclado();
+   lcd->escreveSenha("Digite a Senha", senInput);
   countTeclado = 0;
   senInput = "";
   if (letra != ' ') {
