@@ -25,15 +25,15 @@ SensorPIR *sensorpir;
 /* Output params:      n/a                         
 /* ************************************************ */
 void setup() {
-  Serial.begin(9600);
+  //Serial.begin(9600);
   // declaracao de variaveis
   int  portaTranca = A2; // pino ligado ao relé que libera a tranca, A2 = pino 16
   byte portaLinhas[4] = {A3, 8, 7, 6}; // linha do teclado
   byte portaColunas[4] = {5, 4, 3, A1}; // coluna do teclaso
   byte portaLcd = 0x27; // endereço do módulo i2c
   int portaSensorPIR = 2; // pino em que quando o sensor de presença detecta alguém envia sinal HIGH
-  int tx = 0;
-  int rx = 1;
+  int tx = 1;
+  int rx = 0;
 
   tranca1 = new Tranca(portaTranca);                  //cria o objeto traca
   teclado = new Teclado(portaLinhas, portaColunas, tx, rx);   //cria o objeto teclado

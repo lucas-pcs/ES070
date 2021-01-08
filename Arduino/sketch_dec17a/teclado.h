@@ -25,8 +25,9 @@ class Teclado {
     byte *linhas;
     byte *colunas;
     Keypad *teclado_personalizado;
-    SoftwareSerial *serial;
+    //SoftwareSerial *serial;
   public:
+    SoftwareSerial *serial;
     Teclado(byte *linha, byte *coluna, int tx, int rx);
     char leTeclado();
 };
@@ -43,7 +44,7 @@ Teclado::Teclado(byte *linha, byte *coluna, int tx, int rx)
   colunas = coluna;
   teclado_personalizado = new Keypad(makeKeymap(dicionarioTeclado), linha, coluna, nlinhas, ncolunas);
   serial = new SoftwareSerial(tx, rx);
-  serial->begin(9600);
+  serial-> begin(9600);
   Serial.println("Teclado INICIALIZADO");
 };
 
@@ -62,7 +63,7 @@ char Teclado::leTeclado()
   }
   // código usado para simular teclado via serial
   if (((leitura_teclas >= '0') && (leitura_teclas <= '9')  ) || ((leitura_teclas == 'A') || (leitura_teclas == 'B') || (leitura_teclas == 'C') || (leitura_teclas == 'D') || (leitura_teclas == '#'))) {
-    char leitura_teclas = Serial.read();
+    leitura_teclas = serial->read();
     Serial.println(leitura_teclas);
     return leitura_teclas;
   }

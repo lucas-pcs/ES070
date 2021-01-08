@@ -78,8 +78,8 @@ Maquina::Maquina(Tranca *tranca2, Teclado *teclado2, Lcd *lcd2, RFID *rfid2, Sen
   teclado = teclado2;                 //cria o objeto teclado
   lcd = lcd2;                         //cria o objeto lcd
   rfid = rfid2;                       //cria o objeto lcd
-  Serial.println("MAQUINA metodo 2");
   sensorpir = sensorpir1;
+  teclado->serial->write("MAQUINA metodo 2");
 };
 
 /* ************************************************************************************************ */
