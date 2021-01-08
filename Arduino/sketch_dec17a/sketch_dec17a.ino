@@ -1,3 +1,13 @@
+/* ***************************************************** */
+/* File name:          sketch_dec17a               
+/* File description:   Main do projeto                        
+/* Author name:        Luiz Furlan                       
+/* Author name:        Lucas Pereira                     
+/* Author name:        Gabriel Murizine                  
+/* Creation date:      24Apr2020                         
+/* Revision date:      24Apr2020                         
+/* ***************************************************** */
+
 #include "maquina.h"
 #include <avr/sleep.h>
 
@@ -17,6 +27,12 @@ int portaSensorPIR = 2; // pino em que quando o sensor de presença detecta algu
 int tx = 1;
 int rx = 0;
 
+/* ************************************************ */
+/* Method name:        setup                     
+/* Method description: Inicialização de todos os hardware 
+/* Input params:       n/a                          
+/* Output params:      n/a                         
+/* ************************************************ */
 void setup() {
   Serial.begin(9600);
 
@@ -29,6 +45,12 @@ void setup() {
 
 }
 
+/* ************************************************ */
+/* Method name:        loop                     
+/* Method description: Função de loop que chama as funções de acordo com estado 
+/* Input params:       n/a                          
+/* Output params:      n/a                         
+/* ************************************************ */
 void loop() {
   int sensorPIRteste;
   sensorPIRteste = sensorpir->leSensorPIR();
@@ -72,6 +94,12 @@ void loop() {
   }
 }
 
+/* ************************************************ */
+/* Method name:        modoOcioso                     
+/* Method description: Função que produz o modo ocioso 
+/* Input params:       n/a                          
+/* Output params:      n/a                         
+/* ************************************************ */
 void modoOcioso(){
     set_sleep_mode(SLEEP_MODE_IDLE);
     sleep_enable();
@@ -80,6 +108,12 @@ void modoOcioso(){
     sleep_cpu();
 }
 
+/* ************************************************ */
+/* Method name:        acordar                     
+/* Method description: Função que sai do modo ocioso 
+/* Input params:       n/a                          
+/* Output params:      n/a                         
+/* ************************************************ */
 void acordar(){
     sleep_disable();   // Desabilita o sleep
     detachInterrupt(0);// Desabilita a interrupção
