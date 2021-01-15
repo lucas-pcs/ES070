@@ -54,7 +54,7 @@ char Teclado::leTeclado()
 // código usado para simular teclado via serial
 //  char leitura_teclas = Serial.read();
   
-  char leitura_teclas =teclado_personalizado->getKey(); // Atribui a variavel a leitura do teclado
+  char leitura_teclas = teclado_personalizado->getKey(); // Atribui a variavel a leitura do teclado
   if (leitura_teclas) {                                  // Se alguma tecla foi pressionada
     Serial.println(leitura_teclas);
     return leitura_teclas;                               // retorna tecla pressionada

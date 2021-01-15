@@ -42,14 +42,15 @@ RFID::RFID() {
 /* Output params:      n/a                         
 /* ************************************************************************************************ */
 byte* RFID::LeTag() {
-  if (mfrc522.PICC_IsNewCardPresent()) {
-    if ( mfrc522.PICC_ReadCardSerial()) {
+  if (mfrc522.PICC_IsNewCardPresent()){
+    if (mfrc522.PICC_ReadCardSerial()){
       for (int i = 0; i < mfrc522.uid.size; i++) {
         readCard[i] = mfrc522.uid.uidByte[i]; // Lê o cartão RFID
+       // Serial.println("testeRFID_1");
       }
       return readCard;
-    } else {
-      return noCard;
-    }
+      } 
   }
+       // Serial.println("testeRFID_nocard");
+  return noCard;
 };

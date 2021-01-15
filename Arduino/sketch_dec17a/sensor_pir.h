@@ -9,7 +9,7 @@
 /* Revision date:                               
 /* ************************************************************************************************ */
 
-class Sensor
+class SensorPIR
 {
     // variaveis
   private:
@@ -17,7 +17,8 @@ class Sensor
 	  int _iDetectaPresenca;
     // metodos
   public:
-    int leSensor();
+    SensorPIR(int iPorta);
+    int leSensorPIR();
 };
 
 /* ************************************************************************************************ */
@@ -26,7 +27,7 @@ class Sensor
 /* Input params:       int Porta: recebe pino onde esta ligado o sensor                      
 /* Output params:      n/a                         
 /* ************************************************************************************************ */
-Sensor::Sensor(int iPorta)
+SensorPIR::SensorPIR(int iPorta)
 {
   _iPorta = iPorta;
   _iDetectaPresenca = 0;
@@ -41,7 +42,7 @@ Sensor::Sensor(int iPorta)
 /* Input params:       n/a                    
 /* Output params:      n/a                         
 /* ************************************************************************************************ */
-int Sensor::leSensor()
+int SensorPIR::leSensorPIR()
 {
   _iDetectaPresenca = digitalRead(_iPorta); // Lê o estado do sensor de presença em que 1 = sensor ativado
   return _iDetectaPresenca;

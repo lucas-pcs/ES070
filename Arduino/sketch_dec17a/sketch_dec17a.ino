@@ -15,7 +15,7 @@ Tranca *tranca1;    //Cria ponteiro para a tranca
 Teclado *teclado;   //Cria ponteiro para a tranca
 Lcd *lcd;           //Cria ponteiro para a tranca
 RFID *rfid;         //Cria ponteiro para a tranca
-Sensor *sensor1;
+SensorPIR *sensorpir;
 
 /* ************************************************ */
 /* Method name:        setup                     
@@ -28,15 +28,15 @@ void setup() {
   // declaracao de variaveis
   int  portaTranca = A2; // pino ligado ao relé que libera a tranca, A2 = pino 16
   byte portaLinhas[4] = {A3, 8, 7, 6}; // linha do teclado
-  byte portaColunas[4] = {5, 4, 3, 2}; // coluna do teclaso
+  byte portaColunas[4] = {5, 4, 3, A1}; // coluna do teclaso
   byte portaLcd = 0x27; // endereço do módulo i2c
-  int portaSensorPIR = A1; // pino em que quando o sensor de presença detecta alguém envia sinal HIGH
+  int portaSensorPIR = 2; // pino em que quando o sensor de presença detecta alguém envia sinal HIGH
 
   tranca1 = new Tranca(portaTranca);                  //cria o objeto traca
   teclado = new Teclado(portaLinhas, portaColunas);   //cria o objeto teclado
   lcd = new Lcd(portaLcd);                            //cria o objeto lcd
   rfid = new RFID();                                  //cria o objeto rfid
-  sensor1 = new Sensor(portaSensor);          //cria o objeto do sensor de presenca
+  sensorpir = new SensorPIR(portaSensorPIR);          //cria o objeto do sensor de presenca
   maq = new Maquina(tranca1, teclado, lcd, rfid, sensorpir);     //cria o objeto maquina de estados
 
 }
