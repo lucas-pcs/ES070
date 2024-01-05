@@ -2,6 +2,9 @@
 
 Development of an eletronic lock
 
+![Schematic](https://drive.google.com/file/d/1pbjVSl5UzUkx4eC6-Sh5FzCLfELQFs8I/view?usp=sharing) <br>
+![State Machine](https://drive.google.com/file/d/1pbjVSl5UzUkx4eC6-Sh5FzCLfELQFs8I/view?usp=sharing) <br>
+
 ## Documentation:
 - PDF: https://drive.google.com/file/d/1bxiHh06UDiYbmg7vkgqBrBXjsO6MNy2V/view?usp=sharing
 
